@@ -22,7 +22,35 @@ const MainFeature = () => {
   const [selectedFriend, setSelectedFriend] = useState(null)
   const [viewingStory, setViewingStory] = useState(null)
   const [mediaTimer, setMediaTimer] = useState(null)
+  const [selectedFilter, setSelectedFilter] = useState('normal')
+  const [showFilters, setShowFilters] = useState(false)
+  const [filters] = useState([
+    { id: 'normal', name: 'Normal', css: 'none' },
+    { id: 'vintage', name: 'Vintage', css: 'sepia(0.5) contrast(1.2) brightness(1.1)' },
+    { id: 'bw', name: 'B&W', css: 'grayscale(1) contrast(1.2)' },
+    { id: 'sepia', name: 'Sepia', css: 'sepia(1) brightness(1.1)' },
+    { id: 'cold', name: 'Cold', css: 'hue-rotate(180deg) saturate(1.3)' },
+    { id: 'warm', name: 'Warm', css: 'hue-rotate(25deg) saturate(1.4) brightness(1.1)' },
+    { id: 'bright', name: 'Bright', css: 'brightness(1.4) contrast(1.1)' },
+    { id: 'dark', name: 'Dark', css: 'brightness(0.7) contrast(1.3)' },
+    { id: 'retro', name: 'Retro', css: 'sepia(0.4) saturate(1.8) hue-rotate(315deg) brightness(1.1)' },
+    { id: 'vivid', name: 'Vivid', css: 'saturate(2) contrast(1.3) brightness(1.1)' }
+  ])
+
   const cameraRef = useRef(null)
+
+  
+  const selectFilter = (filter) => {
+    setSelectedFilter(filter.id)
+    toast.success(`🎨 ${filter.name} filter applied!`, {
+      icon: false,
+      className: 'bg-black border border-primary/30'
+    })
+  }
+  
+  const getCurrentFilter = () => {
+    return filters.find(f => f.id === selectedFilter) || filters[0]
+  }
 
   // Simulate camera capture
   const handleCapture = () => {
@@ -35,14 +63,21 @@ const MainFeature = () => {
     }, 100)
 
     setTimeout(() => {
+      const currentFilter = getCurrentFilter()
       const mockImage = `https://images.unsplash.com/photo-${Date.now() % 10 === 0 ? '1506905925473-2c1f2e3e' : '1516985080664-3a590d9ca1a6'}?w=400&h=600&fit=crop`
-      setCapturedMedia({ type: 'image', url: mockImage, timestamp: Date.now() })
+      setCapturedMedia({ 
+        type: 'image', 
+        url: mockImage, 
+        timestamp: Date.now(),
+        filter: currentFilter
+      })
       setIsCapturing(false)
       toast.success('📸 Snap captured!', {
         icon: false,
         className: 'bg-black border border-primary/30'
       })
     }, 1000)
+
   }
 
   const sendMessage = () => {
@@ -148,7 +183,8 @@ const MainFeature = () => {
                   <img 
                     src={capturedMedia.url} 
                     alt="Captured" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover filter-transition"
+                    style={{ filter: capturedMedia.filter?.css || 'none' }}
                   />
                   <div className="absolute inset-0 bg-black/20" />
                   <button
@@ -164,21 +200,83 @@ const MainFeature = () => {
                   </div>
                 </div>
               ) : (
-                <div className="h-full flex items-center justify-center">
-                  <div className="text-center">
+                <div className="h-full flex items-center justify-center relative">
+                  <div 
+                    className="absolute inset-0 filter-transition"
+                    style={{ 
+                      filter: getCurrentFilter().css,
+                      background: 'linear-gradient(135deg, rgba(100, 100, 100, 0.3), rgba(50, 50, 50, 0.3))'
+                    }}
+                  />
+                  <div className="text-center relative z-10">
                     <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full flex items-center justify-center border border-white/10">
                       <ApperIcon name="Camera" className="w-16 h-16 text-white/50" />
                     </div>
                     <p className="text-white/70 text-lg">Ready to capture a moment</p>
+                    <p className="text-white/50 text-sm mt-2">{getCurrentFilter().name} filter active</p>
                   </div>
                 </div>
               )}
             </div>
 
+            {/* Filter Panel */}
+            <AnimatePresence>
+              {showFilters && (
+                <motion.div
+                  initial={{ y: 100, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: 100, opacity: 0 }}
+                  className="mx-4 mb-4"
+                >
+                  <div className="glass-card p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-white font-semibold text-sm">Choose Filter</h3>
+                      <button
+                        onClick={() => setShowFilters(false)}
+                        className="w-6 h-6 flex items-center justify-center"
+                      >
+                        <ApperIcon name="ChevronDown" className="w-4 h-4 text-white/70" />
+                      </button>
+                    </div>
+                    <div className="flex gap-3 overflow-x-auto pb-2">
+                      {filters.map((filter) => (
+                        <motion.button
+                          key={filter.id}
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: filters.indexOf(filter) * 0.05 }}
+                          onClick={() => selectFilter(filter)}
+                          className={`filter-button ${selectedFilter === filter.id ? 'active' : ''}`}
+                        >
+                          <div className="flex flex-col items-center justify-center h-full p-1">
+                            <div 
+                              className="w-8 h-8 bg-gradient-to-br from-primary/40 to-secondary/40 rounded-lg mb-1 filter-preview"
+                              style={{ filter: filter.css }}
+                            />
+                            <span className="text-xs text-white/80 font-medium truncate">
+                              {filter.name}
+                            </span>
+                          </div>
+                        </motion.button>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+
             {/* Camera Controls */}
             <div className="flex justify-center items-center pb-8 gap-8">
-              <button className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all">
-                <ApperIcon name="Image" className="w-6 h-6 text-white" />
+              <button 
+                onClick={() => setShowFilters(!showFilters)}
+                className={`w-12 h-12 rounded-full flex items-center justify-center border transition-all ${
+                  showFilters 
+                    ? 'bg-primary/20 border-primary text-primary' 
+                    : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+                }`}
+              >
+                <ApperIcon name="Palette" className="w-6 h-6" />
               </button>
               
               <motion.button
@@ -202,6 +300,7 @@ const MainFeature = () => {
                 <ApperIcon name="RotateCcw" className="w-6 h-6 text-white" />
               </button>
             </div>
+
           </motion.div>
         )}
 

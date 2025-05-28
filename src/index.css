@@ -49,6 +49,21 @@
            bg-white/10 backdrop-blur-sm hover:bg-white/20 
            transition-all duration-200 active:scale-90
            shadow-neu-dark;
+  
+  .filter-button {
+    @apply w-16 h-16 rounded-xl border-2 border-white/20 
+           bg-white/10 backdrop-blur-sm hover:border-primary/50 
+           transition-all duration-200 overflow-hidden flex-shrink-0;
+  }
+  
+  .filter-button.active {
+    @apply border-primary shadow-flash bg-primary/20;
+  }
+  
+  .filter-preview {
+    @apply w-full h-full object-cover transition-all duration-300;
+  }
+
   }
 }
 
@@ -68,6 +83,11 @@
     box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.3),
                 inset -5px -5px 10px rgba(255, 255, 255, 0.1);
   }
+  
+  .filter-transition {
+    transition: filter 0.3s ease-in-out;
+  }
+
 }
 
 /* Custom scrollbar */
