@@ -1,23 +1,29 @@
-import { Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import { ThemeProvider } from './contexts/ThemeContext'
 import ThemeToggle from './components/ThemeToggle'
-
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-surface-50 dark:bg-black text-black dark:text-white overflow-hidden transition-colors duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-surface-50 to-surface-100 
+                      dark:from-dark-100 dark:to-dark-200 
+                      transition-colors duration-300">
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+        
         <ThemeToggle />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        
         <ToastContainer
-          position="top-center"
+          position="top-right"
           autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
@@ -26,15 +32,12 @@ function App() {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme="dark"
-          toastClassName="bg-surface-800 text-white border border-primary/20"
-          bodyClassName="text-white"
-          progressClassName="bg-primary"
+          theme="colored"
+          className="mt-16"
         />
       </div>
     </ThemeProvider>
   )
 }
-
 
 export default App

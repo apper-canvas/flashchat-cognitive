@@ -19,7 +19,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    @apply bg-surface-50 dark:bg-dark-100 text-surface-900 dark:text-dark-900 transition-colors duration-300;
   }
+
+  body {
+    @apply bg-surface-50 dark:bg-dark-100 text-surface-900 dark:text-dark-900;
+  }
+  
+
 }
 
 @layer components {
@@ -39,27 +46,30 @@
            shadow-neu-dark backdrop-blur-sm;
   }
   
+  
   .glass-card {
-    @apply backdrop-blur-md bg-white/5 border border-white/10 
+    @apply backdrop-blur-md bg-white/5 dark:bg-black/10 border border-white/10 dark:border-white/5
            rounded-2xl shadow-neu-dark;
   }
+
   
   .capture-button {
-    @apply w-20 h-20 rounded-full border-4 border-white/30 
-           bg-white/10 backdrop-blur-sm hover:bg-white/20 
+    @apply w-20 h-20 rounded-full border-4 border-white/30 dark:border-white/20
+           bg-white/10 dark:bg-black/20 backdrop-blur-sm hover:bg-white/20 dark:hover:bg-black/30
            transition-all duration-200 active:scale-90
            shadow-neu-dark;
   }
 
   .filter-button {
-    @apply w-16 h-16 rounded-xl border-2 border-white/20 
-           bg-white/10 backdrop-blur-sm hover:border-primary/50 
+    @apply w-16 h-16 rounded-xl border-2 border-white/20 dark:border-white/10
+           bg-white/10 dark:bg-black/20 backdrop-blur-sm hover:border-primary/50 
            transition-all duration-200 overflow-hidden flex-shrink-0;
   }
   
   .filter-button.active {
-    @apply border-primary shadow-flash bg-primary/20;
+    @apply border-primary shadow-flash bg-primary/20 dark:bg-primary/30;
   }
+
   
   .filter-preview {
     @apply w-full h-full object-cover transition-all duration-300;
@@ -95,18 +105,18 @@
   width: 4px;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+:::-webkit-scrollbar-track {
+  @apply bg-white/10 dark:bg-black/20;
 }
 
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #FFFC00, #FF3040);
-  border-radius: 2px;
+:::-webkit-scrollbar-thumb {
+  @apply bg-gradient-to-r from-primary to-secondary rounded-sm;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #FF3040, #9B59B6);
+:::-webkit-scrollbar-thumb:hover {
+  @apply bg-gradient-to-r from-secondary to-accent;
 }
+
 
 /* Hide input number arrows */
 input[type="number"]::-webkit-outer-spin-button,
