@@ -45,7 +45,7 @@ const NotFound = () => {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="text-white/70 text-lg sm:text-xl mb-8 max-w-md"
+className="text-gray-700 text-lg sm:text-xl mb-8 max-w-md"
         >
           Oops! This snap disappeared into the void.
         </motion.p>

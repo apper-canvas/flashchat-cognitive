@@ -42,6 +42,11 @@ export default {
           800: '#f1f5f9',
           900: '#f8fafc'
         }
+},
+      textColor: {
+        'dark-primary': '#1a1a1a',
+        'dark-secondary': '#2d2d2d',
+        'dark-muted': '#4a4a4a'
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui'],

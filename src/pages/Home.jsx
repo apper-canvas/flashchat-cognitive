@@ -35,24 +35,25 @@ const Home = () => {
       >
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-          <span className="text-white/70 text-xs font-medium">
+<span className="text-gray-700 text-xs font-medium">
             {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
         
         <div className="flex items-center gap-3">
-          <div className="flex gap-1">
-            <div className="w-1 h-3 bg-white/70 rounded-full" />
-            <div className="w-1 h-3 bg-white/70 rounded-full" />
-            <div className="w-1 h-3 bg-white/50 rounded-full" />
-            <div className="w-1 h-3 bg-white/30 rounded-full" />
+<div className="flex gap-1">
+            <div className="w-1 h-3 bg-gray-700 rounded-full" />
+            <div className="w-1 h-3 bg-gray-700 rounded-full" />
+            <div className="w-1 h-3 bg-gray-500 rounded-full" />
+            <div className="w-1 h-3 bg-gray-300 rounded-full" />
           </div>
+          <ApperIcon name="Wifi" className="w-4 h-4 text-gray-700" />
           <ApperIcon name="Wifi" className="w-4 h-4 text-white/70" />
           <div className="flex items-center gap-1">
             <div className="w-6 h-3 border border-white/50 rounded-sm">
-              <div className="w-4 h-1.5 bg-primary rounded-sm mt-0.5 ml-0.5" />
-            </div>
-            <span className="text-xs text-white/70">87%</span>
+</div>
+            <span className="text-xs text-gray-700">87%</span>
+          </div>
           </div>
         </div>
       </motion.div>

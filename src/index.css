@@ -19,7 +19,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
-    @apply bg-white text-surface-900 transition-colors duration-300;
+@apply bg-white text-gray-900 transition-colors duration-300;
   }
 
 }
@@ -77,11 +77,11 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
   
-  .gradient-text {
-    background: linear-gradient(135deg, #FFFC00, #FF3040, #9B59B6);
+background: linear-gradient(135deg, #E6E300, #E6002E, #8B4A96);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
   }
   
   .neo-inset {

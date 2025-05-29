@@ -157,7 +157,7 @@ const MainFeature = () => {
               className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
                 currentView === tab.key
                   ? 'bg-primary text-black shadow-flash'
-                  : 'text-white/70 hover:text-white'
+: 'text-gray-700 hover:text-gray-900'
               }`}
             >
               <ApperIcon name={tab.icon} className="w-4 h-4 mx-auto" />
@@ -211,9 +211,10 @@ const MainFeature = () => {
                   <div className="text-center relative z-10">
                     <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full flex items-center justify-center border border-white/10">
                       <ApperIcon name="Camera" className="w-16 h-16 text-white/50" />
+<ApperIcon name="Camera" className="w-16 h-16 text-gray-600" />
                     </div>
-                    <p className="text-white/70 text-lg">Ready to capture a moment</p>
-                    <p className="text-white/50 text-sm mt-2">{getCurrentFilter().name} filter active</p>
+                    <p className="text-gray-700 text-lg">Ready to capture a moment</p>
+                    <p className="text-gray-500 text-sm mt-2">{getCurrentFilter().name} filter active</p>
                   </div>
                 </div>
               )}
@@ -230,12 +231,12 @@ const MainFeature = () => {
                 >
                   <div className="glass-card p-4">
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-white font-semibold text-sm">Choose Filter</h3>
+<h3 className="text-gray-800 font-semibold text-sm">Choose Filter</h3>
                       <button
                         onClick={() => setShowFilters(false)}
                         className="w-6 h-6 flex items-center justify-center"
                       >
-                        <ApperIcon name="ChevronDown" className="w-4 h-4 text-white/70" />
+<ApperIcon name="ChevronDown" className="w-4 h-4 text-gray-600" />
                       </button>
                     </div>
                     <div className="flex gap-3 overflow-x-auto pb-2">
@@ -253,7 +254,7 @@ const MainFeature = () => {
                               className="w-8 h-8 bg-gradient-to-br from-primary/40 to-secondary/40 rounded-lg mb-1 filter-preview"
                               style={{ filter: filter.css }}
                             />
-                            <span className="text-xs text-white/80 font-medium truncate">
+<span className="text-xs text-gray-700 font-medium truncate">
                               {filter.name}
                             </span>
                           </div>
@@ -273,7 +274,7 @@ const MainFeature = () => {
                 className={`w-12 h-12 rounded-full flex items-center justify-center border transition-all ${
                   showFilters 
                     ? 'bg-primary/20 border-primary text-primary' 
-                    : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+: 'bg-gray-200 border-gray-300 text-gray-700 hover:bg-gray-300'
                 }`}
               >
                 <ApperIcon name="Palette" className="w-6 h-6" />
@@ -297,7 +298,8 @@ const MainFeature = () => {
               </motion.button>
 
               <button className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all">
-                <ApperIcon name="RotateCcw" className="w-6 h-6 text-white" />
+<button className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center border border-gray-300 hover:bg-gray-300 transition-all">
+                <ApperIcon name="RotateCcw" className="w-6 h-6 text-gray-700" />
               </button>
             </div>
 
@@ -340,7 +342,7 @@ const MainFeature = () => {
                           className="w-6 h-6 rounded-full border border-white/50"
                         />
                         <span className="text-white text-xs font-medium text-shadow">
-                          {story.user}
+<span className="text-gray-800 text-xs font-medium text-shadow">
                         </span>
                       </div>
                     </div>
@@ -383,8 +385,8 @@ const MainFeature = () => {
                           <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-black" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-semibold text-white">{friend}</h3>
-                          <p className="text-sm text-white/60">Tap to chat</p>
+<h3 className="font-semibold text-gray-800">{friend}</h3>
+                          <p className="text-sm text-gray-600">Tap to chat</p>
                         </div>
                         <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
                       </div>
@@ -400,7 +402,7 @@ const MainFeature = () => {
                     onClick={() => setSelectedFriend(null)}
                     className="w-8 h-8 flex items-center justify-center"
                   >
-                    <ApperIcon name="ArrowLeft" className="w-5 h-5 text-white" />
+<ApperIcon name="ArrowLeft" className="w-5 h-5 text-gray-800" />
                   </button>
                   <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
                     <span className="text-black font-bold">
@@ -408,8 +410,8 @@ const MainFeature = () => {
                     </span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white">{selectedFriend}</h3>
-                    <p className="text-xs text-white/60">Active now</p>
+<h3 className="font-semibold text-gray-800">{selectedFriend}</h3>
+                    <p className="text-xs text-gray-600">Active now</p>
                   </div>
                 </div>
 
@@ -428,7 +430,7 @@ const MainFeature = () => {
                           message.type === 'sent'
                             ? 'bg-primary text-black'
                             : message.viewed
-                            ? 'bg-white/10 text-white/50'
+? 'bg-gray-200 text-gray-500'
                             : 'bg-secondary text-white'
                         } ${!message.viewed && message.type === 'received' ? 'animate-bounce-soft' : ''}`}
                       >
@@ -457,7 +459,7 @@ const MainFeature = () => {
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                      placeholder="Send a chat..."
+className="flex-1 bg-gray-100 border border-gray-300 rounded-full px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:border-primary/50"
                       className="flex-1 bg-white/10 border border-white/20 rounded-full px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-primary/50"
                     />
                     <button
