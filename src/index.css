@@ -65,7 +65,6 @@
     @apply w-full h-full object-cover transition-all duration-300;
   }
 
-  }
 }
 
 @layer utilities {
