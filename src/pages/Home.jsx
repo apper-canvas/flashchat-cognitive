@@ -48,15 +48,13 @@ const Home = () => {
             <div className="w-1 h-3 bg-gray-300 rounded-full" />
           </div>
           <ApperIcon name="Wifi" className="w-4 h-4 text-gray-700" />
-          <ApperIcon name="Wifi" className="w-4 h-4 text-white/70" />
           <div className="flex items-center gap-1">
             <div className="w-6 h-3 border border-white/50 rounded-sm">
-</div>
+<div className="w-5 h-2 bg-gray-700 rounded-sm"></div>
+            </div>
             <span className="text-xs text-gray-700">87%</span>
-          </div>
-          </div>
+</div>
         </div>
-</motion.div>
       </motion.div>
 
       {/* Main Content */}
