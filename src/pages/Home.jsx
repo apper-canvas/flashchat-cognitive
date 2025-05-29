@@ -56,6 +56,7 @@ const Home = () => {
           </div>
           </div>
         </div>
+</motion.div>
       </motion.div>
 
       {/* Main Content */}
