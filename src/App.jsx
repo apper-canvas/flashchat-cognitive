@@ -10,12 +10,12 @@ import 'react-toastify/dist/ReactToastify.css'
 function App() {
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
+      <div className="min-h-screen bg-white transition-colors duration-300">
 
         <Router>
           <ThemeToggle />
           
-          <main className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
+          <main className="min-h-screen bg-white transition-colors duration-300">
 
             <Routes>
               <Route path="/" element={<Home />} />

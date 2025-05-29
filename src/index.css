@@ -19,7 +19,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
-    @apply bg-surface-50 dark:bg-dark-100 text-surface-900 dark:text-dark-900 transition-colors duration-300;
+    @apply bg-white text-surface-900 transition-colors duration-300;
   }
 
 }
