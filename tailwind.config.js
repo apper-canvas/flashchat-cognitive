@@ -42,7 +42,6 @@ export default {
           800: '#f1f5f9',
           900: '#f8fafc'
         }
-
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui'],
@@ -102,6 +101,5 @@ export default {
     }
   },
   darkMode: 'class',
-
   plugins: [],
 }

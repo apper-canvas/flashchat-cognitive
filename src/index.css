@@ -22,11 +22,6 @@
     @apply bg-surface-50 dark:bg-dark-100 text-surface-900 dark:text-dark-900 transition-colors duration-300;
   }
 
-  body {
-    @apply bg-surface-50 dark:bg-dark-100 text-surface-900 dark:text-dark-900;
-  }
-  
-
 }
 
 @layer components {
