@@ -521,16 +521,13 @@ const insertEmoji = (emoji) => {
                     )}
                   </AnimatePresence>
                   <div className="flex gap-3 items-center">
-                    <input
+<input
                       type="text"
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-className="flex-1 bg-gray-100 border border-gray-300 rounded-full px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:border-primary/50"
->
-                      <ApperIcon name="Smile" className="w-5 h-5" />
-                    </button>
-placeholder="Type a message..."
+                      placeholder="Type a message..."
+                      className="flex-1 bg-gray-100 border border-gray-300 rounded-full px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:border-primary/50"
                     />
                     <button
                       onClick={toggleEmojiPicker}
@@ -539,6 +536,9 @@ placeholder="Type a message..."
                           ? 'bg-primary text-black' 
                           : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                       }`}
+>
+                      <ApperIcon name="Smile" className="w-5 h-5" />
+                    </button>
                     <button
                       onClick={sendMessage}
                       className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:shadow-flash transform hover:scale-105 transition-all"
