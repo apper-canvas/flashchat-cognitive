@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify'
 import { ThemeProvider } from './contexts/ThemeContext'
 import ThemeToggle from './components/ThemeToggle'
 import Home from './pages/Home'
+import AddFriends from './pages/AddFriends'
 import NotFound from './pages/NotFound'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -18,6 +19,7 @@ function App() {
           <main className="min-h-screen bg-white transition-colors duration-300">
 
             <Routes>
+<Route path="/add-friends" element={<AddFriends />} />
               <Route path="/" element={<Home />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
