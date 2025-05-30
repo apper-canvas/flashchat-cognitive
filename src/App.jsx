@@ -5,6 +5,7 @@ import { ThemeProvider } from './contexts/ThemeContext'
 import ThemeToggle from './components/ThemeToggle'
 import Home from './pages/Home'
 import AddFriends from './pages/AddFriends'
+import StoriesArchive from './pages/StoriesArchive'
 import NotFound from './pages/NotFound'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -20,6 +21,7 @@ function App() {
 
             <Routes>
 <Route path="/add-friends" element={<AddFriends />} />
+<Route path="/stories-archive" element={<StoriesArchive />} />
               <Route path="/" element={<Home />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

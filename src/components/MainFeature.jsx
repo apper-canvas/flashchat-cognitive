@@ -908,7 +908,16 @@ const toggleEmojiPicker = () => {
                   <span className="text-gray-800">Add Friends</span>
                 </div>
               </button>
-              <button className="w-full glass-card p-4 text-left hover:bg-white/10 transition-all">
+<button 
+                onClick={() => {
+                  navigate('/stories-archive')
+                  toast.info('📚 Browse your archived stories!', {
+                    icon: false,
+                    className: 'bg-black border border-primary/30'
+                  })
+                }}
+                className="w-full glass-card p-4 text-left hover:bg-white/10 transition-all"
+              >
                 <div className="flex items-center gap-3">
                   <ApperIcon name="Archive" className="w-5 h-5 text-gray-700" />
                   <span className="text-gray-800">My Stories Archive</span>
