@@ -23,6 +23,35 @@ const MainFeature = () => {
   const [viewingStory, setViewingStory] = useState(null)
 const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const [emojiCategory, setEmojiCategory] = useState('smileys')
+  const [profile, setProfile] = useState({
+    username: 'flashuser_2024',
+    displayName: 'Flash User',
+    bio: 'Living life one snap at a time ⚡',
+    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop&crop=face',
+    snapsSent: 1247,
+    storiesPosted: 89,
+    friendsCount: 156,
+    isEditing: false
+  })
+  const [settings, setSettings] = useState({
+    notifications: {
+      messages: true,
+      stories: true,
+      friends: false,
+      marketing: false
+    },
+    privacy: {
+      viewStories: 'friends',
+      receiveMessages: 'everyone',
+      findByPhone: true,
+      showOnline: true
+    },
+    display: {
+      darkMode: false,
+      language: 'en',
+      soundEffects: true
+    }
+  })
   const [emojis] = useState({
     smileys: ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥'],
     hearts: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️', '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐'],
@@ -173,25 +202,6 @@ const toggleEmojiPicker = () => {
         className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50"
       >
         <div className="flex bg-black/50 backdrop-blur-md rounded-full p-1 border border-white/20">
-          {[
-            { key: 'stories', icon: 'Users', label: 'Stories' },
-            { key: 'camera', icon: 'Camera', label: 'Camera' },
-            { key: 'chat', icon: 'MessageCircle', label: 'Chat' }
-          ].map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setCurrentView(tab.key)}
-              className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
-                currentView === tab.key
-                  ? 'bg-primary text-black shadow-flash'
-: 'text-gray-700 hover:text-gray-900'
-              }`}
-            >
-              <ApperIcon name={tab.icon} className="w-4 h-4 mx-auto" />
-            </button>
-          ))}
-        </div>
-      </motion.div>
 
       <AnimatePresence mode="wait">
         {/* Camera View */}
