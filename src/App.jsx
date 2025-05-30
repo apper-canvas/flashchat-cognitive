@@ -8,6 +8,7 @@ import AddFriends from './pages/AddFriends'
 import StoriesArchive from './pages/StoriesArchive'
 import NotFound from './pages/NotFound'
 import 'react-toastify/dist/ReactToastify.css'
+import Favorites from './pages/Favorites'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <ThemeToggle />
           
           <main className="min-h-screen bg-white transition-colors duration-300">
+<Route path="/favorites" element={<Favorites />} />
 
             <Routes>
 <Route path="/add-friends" element={<AddFriends />} />
