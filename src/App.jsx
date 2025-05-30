@@ -19,11 +19,10 @@ function App() {
           <ThemeToggle />
           
           <main className="min-h-screen bg-white transition-colors duration-300">
-<Route path="/favorites" element={<Favorites />} />
-
-            <Routes>
-<Route path="/add-friends" element={<AddFriends />} />
-<Route path="/stories-archive" element={<StoriesArchive />} />
+<Routes>
+              <Route path="/add-friends" element={<AddFriends />} />
+              <Route path="/stories-archive" element={<StoriesArchive />} />
+              <Route path="/favorites" element={<Favorites />} />
               <Route path="/" element={<Home />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
