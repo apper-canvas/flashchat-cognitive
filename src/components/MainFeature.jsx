@@ -31,7 +31,8 @@ const [showEmojiPicker, setShowEmojiPicker] = useState(false)
     snapsSent: 1247,
     storiesPosted: 89,
     friendsCount: 156,
-    isEditing: false
+isEditing: false
+  })
 const [showAddFriends, setShowAddFriends] = useState(false)
   const [friendSearch, setFriendSearch] = useState('')
   const [friendSuggestions] = useState([
@@ -941,6 +942,7 @@ const toggleEmojiPicker = () => {
                   <span className="text-gray-800">Share Profile</span>
                 </div>
               </button>
+</div>
             </div>
           </motion.div>
         )}
