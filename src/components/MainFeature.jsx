@@ -110,6 +110,22 @@ const [showEmojiPicker, setShowEmojiPicker] = useState(false)
       className: 'bg-black border border-primary/30'
     })
 }
+const toggleEmojiPicker = () => {
+    setShowEmojiPicker(!showEmojiPicker)
+    toast.info(showEmojiPicker ? 'Emoji picker closed' : '😊 Choose an emoji!', {
+      icon: false,
+      className: 'bg-black border border-primary/30'
+    })
+  }
+
+  const insertEmoji = (emoji) => {
+    setNewMessage(prev => prev + emoji)
+    toast.success(`${emoji} added!`, {
+      icon: false,
+      className: 'bg-black border border-primary/30',
+      autoClose: 1000
+    })
+  }
 
   const viewMessage = (messageId) => {
     const message = messages.find(m => m.id === messageId && !m.viewed)
