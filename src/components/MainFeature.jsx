@@ -32,6 +32,51 @@ const [showEmojiPicker, setShowEmojiPicker] = useState(false)
     storiesPosted: 89,
     friendsCount: 156,
     isEditing: false
+const [showAddFriends, setShowAddFriends] = useState(false)
+  const [friendSearch, setFriendSearch] = useState('')
+  const [friendSuggestions] = useState([
+    { id: 1, username: 'jenny_flash', displayName: 'Jenny Flash', avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face', mutualFriends: 12, status: 'none' },
+    { id: 2, username: 'david_snap', displayName: 'David Snap', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', mutualFriends: 8, status: 'none' },
+    { id: 3, username: 'lisa_moments', displayName: 'Lisa Moments', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face', mutualFriends: 5, status: 'none' },
+    { id: 4, username: 'carlos_flash', displayName: 'Carlos Flash', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face', mutualFriends: 15, status: 'none' },
+    { id: 5, username: 'maya_snap', displayName: 'Maya Snap', avatar: 'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=100&h=100&fit=crop&crop=face', mutualFriends: 3, status: 'none' },
+    { id: 6, username: 'ryan_flash', displayName: 'Ryan Flash', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face', mutualFriends: 7, status: 'none' },
+    { id: 7, username: 'sofia_moments', displayName: 'Sofia Moments', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face', mutualFriends: 11, status: 'none' },
+    { id: 8, username: 'tyler_snap', displayName: 'Tyler Snap', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face', mutualFriends: 4, status: 'none' }
+  ])
+  const [pendingRequests, setPendingRequests] = useState([])
+
+  const filteredFriends = friendSuggestions.filter(friend => 
+    friend.username.toLowerCase().includes(friendSearch.toLowerCase()) ||
+    friend.displayName.toLowerCase().includes(friendSearch.toLowerCase())
+  )
+
+  const sendFriendRequest = (friend) => {
+    if (pendingRequests.includes(friend.id)) {
+      toast.info('Friend request already sent!', {
+        icon: false,
+        className: 'bg-black border border-primary/30'
+      })
+      return
+    }
+
+    setPendingRequests(prev => [...prev, friend.id])
+    setProfile(prev => ({ ...prev, friendsCount: prev.friendsCount + 1 }))
+    
+    toast.success(`Friend request sent to ${friend.displayName}! 🤝`, {
+      icon: false,
+      className: 'bg-black border border-primary/30'
+    })
+  }
+
+  const openAddFriends = () => {
+    setShowAddFriends(true)
+    setFriendSearch('')
+    toast.info('🔍 Discover and add new friends!', {
+      icon: false,
+      className: 'bg-black border border-primary/30'
+    })
+  }
   })
   const [settings, setSettings] = useState({
     notifications: {
@@ -870,8 +915,10 @@ const toggleEmojiPicker = () => {
             </div>
 
             {/* Profile Actions */}
-            <div className="space-y-3">
-              <button className="w-full glass-card p-4 text-left hover:bg-white/10 transition-all">
+<button 
+                onClick={openAddFriends}
+                className="w-full glass-card p-4 text-left hover:bg-white/10 transition-all"
+              >
                 <div className="flex items-center gap-3">
                   <ApperIcon name="UserPlus" className="w-5 h-5 text-gray-700" />
                   <span className="text-gray-800">Add Friends</span>
