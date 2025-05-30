@@ -915,7 +915,8 @@ const toggleEmojiPicker = () => {
             </div>
 
             {/* Profile Actions */}
-<button 
+<div className="space-y-3">
+              <button 
                 onClick={openAddFriends}
                 className="w-full glass-card p-4 text-left hover:bg-white/10 transition-all"
               >
@@ -942,9 +943,7 @@ const toggleEmojiPicker = () => {
                   <span className="text-gray-800">Share Profile</span>
                 </div>
               </button>
-</button>
             </div>
-          </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
