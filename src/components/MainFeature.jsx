@@ -77,7 +77,6 @@ const [showAddFriends, setShowAddFriends] = useState(false)
       className: 'bg-black border border-primary/30'
     })
   }
-  })
   const [settings, setSettings] = useState({
     notifications: {
       messages: true,
