@@ -21,6 +21,17 @@ const MainFeature = () => {
   const [newMessage, setNewMessage] = useState('')
   const [selectedFriend, setSelectedFriend] = useState(null)
   const [viewingStory, setViewingStory] = useState(null)
+const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+  const [emojiCategory, setEmojiCategory] = useState('smileys')
+  const [emojis] = useState({
+    smileys: ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥'],
+    hearts: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️', '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐'],
+    gestures: ['👍', '👎', '👌', '🤌', '🤏', '✌️', '🤞', '🤟', '🤘', '🤙', '👈', '👉', '👆', '🖕', '👇', '☝️', '👋', '🤚', '🖐️', '✋', '🖖', '👏', '🙌', '🤝', '🙏', '✍️', '💅', '🤳', '💪', '🦾', '🦿', '🦵', '🦶', '👂', '🦻', '👃', '🧠', '🫀', '🫁', '🦷'],
+    food: ['🍎', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝', '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶️', '🫑', '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠', '🥐', '🥯', '🍞', '🥖', '🥨', '🧀', '🥚', '🍳', '🧈', '🥞'],
+    travel: ['✈️', '🚗', '🚕', '🚙', '🚌', '🚎', '🏎️', '🚓', '🚑', '🚒', '🚐', '🛻', '🚚', '🚛', '🚜', '🏍️', '🛵', '🚲', '🛴', '🚁', '🛸', '🚀', '🛰️', '💺', '⛵', '🚤', '🛥️', '🚢', '⚓', '🚧', '⛽', '🚏', '🗺️', '🏖️', '🏝️', '⛰️', '🏔️', '🗻', '🏕️', '🏞️'],
+    objects: ['⌚', '📱', '📲', '💻', '⌨️', '🖥️', '🖨️', '🖱️', '🖲️', '🕹️', '🗜️', '💽', '💾', '💿', '📀', '📼', '📷', '📸', '📹', '🎥', '📽️', '🎞️', '📞', '☎️', '📟', '📠', '📺', '📻', '🎙️', '🎚️', '🎛️', '🧭', '⏱️', '⏲️', '⏰', '🕰️', '⏳', '⌛', '📡', '🔋'],
+    symbols: ['💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️', '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓', '🆔', '⚛️', '🉑', '☢️', '☣️', '📴']
+  })
   const [mediaTimer, setMediaTimer] = useState(null)
   const [selectedFilter, setSelectedFilter] = useState('normal')
   const [showFilters, setShowFilters] = useState(false)
@@ -98,6 +109,18 @@ const MainFeature = () => {
       icon: false,
       className: 'bg-black border border-primary/30'
     })
+const insertEmoji = (emoji) => {
+    setNewMessage(prev => prev + emoji)
+    setShowEmojiPicker(false)
+    toast.success(`${emoji} added!`, {
+      icon: false,
+      className: 'bg-black border border-primary/30'
+    })
+  }
+
+  const toggleEmojiPicker = () => {
+    setShowEmojiPicker(!showEmojiPicker)
+  }
   }
 
   const viewMessage = (messageId) => {
@@ -451,6 +474,52 @@ const MainFeature = () => {
 
                 {/* Message Input */}
                 <div className="p-4 border-t border-white/10">
+{/* Emoji Picker */}
+                  <AnimatePresence>
+                    {showEmojiPicker && (
+                      <motion.div
+                        initial={{ y: 50, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: 50, opacity: 0 }}
+                        className="mb-4"
+                      >
+                        <div className="glass-card p-4 max-h-64 overflow-hidden">
+                          {/* Category Tabs */}
+                          <div className="flex gap-2 mb-3 overflow-x-auto">
+                            {Object.keys(emojis).map((category) => (
+                              <button
+                                key={category}
+                                onClick={() => setEmojiCategory(category)}
+                                className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                                  emojiCategory === category
+                                    ? 'bg-primary text-black'
+                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                }`}
+                              >
+                                {category.charAt(0).toUpperCase() + category.slice(1)}
+                              </button>
+                            ))}
+                          </div>
+                          
+                          {/* Emoji Grid */}
+                          <div className="grid grid-cols-8 gap-2 max-h-32 overflow-y-auto">
+                            {emojis[emojiCategory].map((emoji, index) => (
+                              <motion.button
+                                key={index}
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ delay: index * 0.01 }}
+                                onClick={() => insertEmoji(emoji)}
+                                className="w-8 h-8 flex items-center justify-center text-lg hover:bg-gray-200 rounded-lg transition-all transform hover:scale-110"
+                              >
+                                {emoji}
+                              </motion.button>
+                            ))}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   <div className="flex gap-3 items-center">
                     <input
                       type="text"
@@ -458,7 +527,18 @@ const MainFeature = () => {
                       onChange={(e) => setNewMessage(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
 className="flex-1 bg-gray-100 border border-gray-300 rounded-full px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:border-primary/50"
+>
+                      <ApperIcon name="Smile" className="w-5 h-5" />
+                    </button>
+placeholder="Type a message..."
                     />
+                    <button
+                      onClick={toggleEmojiPicker}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                        showEmojiPicker 
+                          ? 'bg-primary text-black' 
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
                     <button
                       onClick={sendMessage}
                       className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:shadow-flash transform hover:scale-105 transition-all"
