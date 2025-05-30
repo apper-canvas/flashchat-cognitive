@@ -942,8 +942,9 @@ const toggleEmojiPicker = () => {
                   <span className="text-gray-800">Share Profile</span>
                 </div>
               </button>
-</div>
+</button>
             </div>
+          </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
