@@ -109,19 +109,7 @@ const [showEmojiPicker, setShowEmojiPicker] = useState(false)
       icon: false,
       className: 'bg-black border border-primary/30'
     })
-const insertEmoji = (emoji) => {
-    setNewMessage(prev => prev + emoji)
-    setShowEmojiPicker(false)
-    toast.success(`${emoji} added!`, {
-      icon: false,
-      className: 'bg-black border border-primary/30'
-    })
-  }
-
-  const toggleEmojiPicker = () => {
-    setShowEmojiPicker(!showEmojiPicker)
-  }
-  }
+}
 
   const viewMessage = (messageId) => {
     const message = messages.find(m => m.id === messageId && !m.viewed)
