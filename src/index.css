@@ -83,9 +83,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-}
-  
-  .neo-inset {
+.neo-inset {
     box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.3),
                 inset -5px -5px 10px rgba(255, 255, 255, 0.1);
   }
@@ -93,7 +91,6 @@
   .filter-transition {
     transition: filter 0.3s ease-in-out;
   }
-
 }
 
 /* Custom scrollbar */
