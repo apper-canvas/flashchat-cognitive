@@ -300,8 +300,7 @@ const MainFeature = () => {
                 <ApperIcon name="RotateCcw" className="w-6 h-6 text-gray-700" />
               </button>
 </div>
-</motion.div>
-            </div>
+          </motion.div>
 
         )}
 
