@@ -211,7 +211,6 @@ const MainFeature = () => {
                   <div className="text-center relative z-10">
                     <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full flex items-center justify-center border border-white/10">
                       <ApperIcon name="Camera" className="w-16 h-16 text-white/50" />
-<ApperIcon name="Camera" className="w-16 h-16 text-gray-600" />
                     </div>
                     <p className="text-gray-700 text-lg">Ready to capture a moment</p>
                     <p className="text-gray-500 text-sm mt-2">{getCurrentFilter().name} filter active</p>
@@ -298,9 +297,9 @@ const MainFeature = () => {
               </motion.button>
 
               <button className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all">
-<button className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center border border-gray-300 hover:bg-gray-300 transition-all">
                 <ApperIcon name="RotateCcw" className="w-6 h-6 text-gray-700" />
               </button>
+</div>
             </div>
 
           </motion.div>
@@ -342,7 +341,7 @@ const MainFeature = () => {
                           className="w-6 h-6 rounded-full border border-white/50"
                         />
                         <span className="text-white text-xs font-medium text-shadow">
-<span className="text-gray-800 text-xs font-medium text-shadow">
+{story.user}
                         </span>
                       </div>
                     </div>
@@ -460,7 +459,6 @@ const MainFeature = () => {
                       onChange={(e) => setNewMessage(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
 className="flex-1 bg-gray-100 border border-gray-300 rounded-full px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:border-primary/50"
-                      className="flex-1 bg-white/10 border border-white/20 rounded-full px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:border-primary/50"
                     />
                     <button
                       onClick={sendMessage}
