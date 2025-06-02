@@ -34,7 +34,8 @@ const [showEmojiPicker, setShowEmojiPicker] = useState(false)
     friendsCount: 156,
 isEditing: false
   })
-const navigate = useNavigate()
+  const [pendingRequests, setPendingRequests] = useState([])
+  const navigate = useNavigate()
 
   const sendFriendRequest = (friend) => {
     if (pendingRequests.includes(friend.id)) {
@@ -153,7 +154,7 @@ const openAddFriends = () => {
     
     const message = {
       id: Date.now(),
-      sender: 'You',
+sender: 'You',
       text: newMessage,
       type: 'sent',
       timer: 5,
@@ -162,12 +163,14 @@ const openAddFriends = () => {
     
     setMessages(prev => [...prev, message])
     setNewMessage('')
-    toast.success('💬 Message sent!', {
+    
+    toast.success('Message sent! 📤', {
       icon: false,
       className: 'bg-black border border-primary/30'
     })
-}
-const toggleEmojiPicker = () => {
+  }
+
+  const toggleEmojiPicker = () => {
     setShowEmojiPicker(!showEmojiPicker)
     toast.info(showEmojiPicker ? 'Emoji picker closed' : '😊 Choose an emoji!', {
       icon: false,
@@ -353,14 +356,14 @@ const toggleEmojiPicker = () => {
             <div className="flex justify-center items-center pb-8 gap-8">
               <button 
                 onClick={() => setShowFilters(!showFilters)}
+onClick={() => setShowFilters(!showFilters)}
                 className={`w-12 h-12 rounded-full flex items-center justify-center border transition-all ${
                   showFilters 
                     ? 'bg-primary/20 border-primary text-primary' 
-: 'bg-gray-200 border-gray-300 text-gray-700 hover:bg-gray-300'
+                    : 'bg-gray-200 border-gray-300 text-gray-700 hover:bg-gray-300'
                 }`}
               >
                 <ApperIcon name="Palette" className="w-6 h-6" />
-              </button>
               
               <motion.button
                 onClick={handleCapture}
