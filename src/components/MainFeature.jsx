@@ -354,9 +354,8 @@ sender: 'You',
 
             {/* Camera Controls */}
             <div className="flex justify-center items-center pb-8 gap-8">
-              <button 
+<button 
                 onClick={() => setShowFilters(!showFilters)}
-onClick={() => setShowFilters(!showFilters)}
                 className={`w-12 h-12 rounded-full flex items-center justify-center border transition-all ${
                   showFilters 
                     ? 'bg-primary/20 border-primary text-primary' 
@@ -364,6 +363,7 @@ onClick={() => setShowFilters(!showFilters)}
                 }`}
               >
                 <ApperIcon name="Palette" className="w-6 h-6" />
+              </button>
               
               <motion.button
                 onClick={handleCapture}
