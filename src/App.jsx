@@ -9,6 +9,7 @@ import StoriesArchive from './pages/StoriesArchive'
 import NotFound from './pages/NotFound'
 import 'react-toastify/dist/ReactToastify.css'
 import Favorites from './pages/Favorites'
+import FavoriteCameraFilters from './pages/FavoriteCameraFilters'
 
 function App() {
   return (
