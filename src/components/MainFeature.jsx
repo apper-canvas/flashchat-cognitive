@@ -1004,9 +1004,10 @@ sender: 'You',
             onClose={() => setShowShareModal(false)}
             isDark={isDark}
           />
-        )}
+)}
       </AnimatePresence>
     </div>
+  )
 }
 
 // Share Profile Modal Component
