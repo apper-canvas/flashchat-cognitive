@@ -942,10 +942,9 @@ sender: 'You',
                 <ApperIcon name="Share" className="w-5 h-5" />
                 <span className="font-medium">Share Profile</span>
               </button>
-            </div>
+</div>
           </motion.div>
         )}
-)}
       </AnimatePresence>
 
       {/* Story Viewer Modal */}
@@ -1214,8 +1213,9 @@ const ShareProfileModal = ({ onClose, isDark }) => {
             <span className="text-sm">QR Code</span>
           </button>
         </div>
-      </motion.div>
+</motion.div>
     </motion.div>
   )
-)
 }
+
+export default MainFeature
