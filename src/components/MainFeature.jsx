@@ -29,10 +29,10 @@ const [showEmojiPicker, setShowEmojiPicker] = useState(false)
     displayName: 'Flash User',
     bio: 'Living life one snap at a time ⚡',
     avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop&crop=face',
-    snapsSent: 1247,
+snapsSent: 1247,
     storiesPosted: 89,
     friendsCount: 156,
-isEditing: false
+    isEditing: false
   })
   const [pendingRequests, setPendingRequests] = useState([])
   const navigate = useNavigate()
@@ -349,29 +349,22 @@ sender: 'You',
                   </div>
                 </motion.div>
               )}
-            </AnimatePresence>
-
+</AnimatePresence>
 
             {/* Camera Controls */}
-            <div className="flex justify-center items-center pb-8 gap-8">
-<button 
+            <div className="flex items-center justify-between px-6 pb-6">
+              <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`w-12 h-12 rounded-full flex items-center justify-center border transition-all ${
-                  showFilters 
-                    ? 'bg-primary/20 border-primary text-primary' 
-                    : 'bg-gray-200 border-gray-300 text-gray-700 hover:bg-gray-300'
-                }`}
+                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all"
               >
-                <ApperIcon name="Palette" className="w-6 h-6" />
+                <ApperIcon name="Sliders" className="w-6 h-6 text-gray-700" />
               </button>
-              
+
               <motion.button
                 onClick={handleCapture}
                 disabled={isCapturing}
-                whileTap={{ scale: 0.9 }}
-                className={`capture-button flex items-center justify-center ${
-                  isCapturing ? 'animate-pulse' : ''
-                }`}
+                whileTap={{ scale: 0.95 }}
+                className="relative"
               >
                 {isCapturing ? (
                   <div className="w-8 h-8 border-4 border-white/30 border-t-white rounded-full animate-spin" />
@@ -385,7 +378,7 @@ sender: 'You',
               <button className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all">
                 <ApperIcon name="RotateCcw" className="w-6 h-6 text-gray-700" />
               </button>
-</div>
+            </div>
           </motion.div>
 
         )}

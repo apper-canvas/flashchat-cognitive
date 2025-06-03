@@ -23,6 +23,7 @@ function App() {
               <Route path="/add-friends" element={<AddFriends />} />
               <Route path="/stories-archive" element={<StoriesArchive />} />
               <Route path="/favorites" element={<Favorites />} />
+              <Route path="/favorite-filters" element={<FavoriteCameraFilters />} />
               <Route path="/" element={<Home />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
