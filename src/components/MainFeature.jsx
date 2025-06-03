@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import { motion, AnimatePresence } from 'framer-motion'
 import ApperIcon from './ApperIcon'
+import { useTheme } from '../contexts/ThemeContext'
+import { toast } from 'react-toastify'
 
 const MainFeature = () => {
   const [currentView, setCurrentView] = useState('camera') // camera, stories, chat
@@ -13,30 +14,43 @@ const MainFeature = () => {
     { id: 2, sender: 'sarah_snap', text: 'Check this out! 📸', type: 'received', timer: 10, viewed: false },
     { id: 3, sender: 'mike_moments', text: 'Party tonight? 🎉', type: 'received', timer: 3, viewed: true }
   ])
-  const [stories, setStories] = useState([
+const [stories, setStories] = useState([
     { id: 1, user: 'alex_flash', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', hasNew: true },
     { id: 2, user: 'sarah_snap', avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face', hasNew: true },
     { id: 3, user: 'mike_moments', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face', hasNew: false },
     { id: 4, user: 'emma_flash', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face', hasNew: true }
   ])
-  const [newMessage, setNewMessage] = useState('')
-  const [selectedFriend, setSelectedFriend] = useState(null)
-  const [viewingStory, setViewingStory] = useState(null)
-const [showEmojiPicker, setShowEmojiPicker] = useState(false)
-  const [emojiCategory, setEmojiCategory] = useState('smileys')
+
+  const navigate = useNavigate()
+  const { isDark } = useTheme()
+  
+  // Profile state
   const [profile, setProfile] = useState({
-    username: 'flashuser_2024',
-    displayName: 'Flash User',
-    bio: 'Living life one snap at a time ⚡',
+    displayName: 'John Doe',
+    username: '@johndoe123',
+    bio: 'Living life one snap at a time! 📸✨',
     avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop&crop=face',
-snapsSent: 1247,
+    snapsSent: 1247,
     storiesPosted: 89,
     friendsCount: 156,
     isEditing: false
   })
+  
+  // Chat states
+  const [selectedFriend, setSelectedFriend] = useState(null)
+  const [newMessage, setNewMessage] = useState('')
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+  const [emojiCategory, setEmojiCategory] = useState('smileys')
+  
+  // Story viewing state
+  const [viewingStory, setViewingStory] = useState(null)
+  
+  // Modal states
+  const [showShareModal, setShowShareModal] = useState(false)
   const [pendingRequests, setPendingRequests] = useState([])
-  const navigate = useNavigate()
-
+  
+  // Camera states (fix duplicate isCapturing)
+  const [isCapturing, setIsCapturing] = useState(false)
   const sendFriendRequest = (friend) => {
     if (pendingRequests.includes(friend.id)) {
       toast.info('Friend request already sent!', {
@@ -103,12 +117,11 @@ const openAddFriends = () => {
     { id: 'bright', name: 'Bright', css: 'brightness(1.4) contrast(1.1)' },
     { id: 'dark', name: 'Dark', css: 'brightness(0.7) contrast(1.3)' },
     { id: 'retro', name: 'Retro', css: 'sepia(0.4) saturate(1.8) hue-rotate(315deg) brightness(1.1)' },
-    { id: 'vivid', name: 'Vivid', css: 'saturate(2) contrast(1.3) brightness(1.1)' }
-  ])
+])
 
   const cameraRef = useRef(null)
 
-  
+  const selectFilter = (filter) => {
   const selectFilter = (filter) => {
     setSelectedFilter(filter.id)
     toast.success(`🎨 ${filter.name} filter applied!`, {
@@ -842,7 +855,7 @@ sender: 'You',
                     rows="2"
                   />
                   <div className="flex gap-2 justify-center">
-                    <button
+<button
                       onClick={() => {
                         setProfile(prev => ({ ...prev, isEditing: false }))
                         toast.success('Profile updated!', {
@@ -863,13 +876,13 @@ sender: 'You',
                   </div>
                 </div>
               ) : (
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-800">{profile.displayName}</h2>
-                  <p className="text-gray-600">@{profile.username}</p>
-                  <p className="text-gray-700 mt-2 max-w-xs mx-auto">{profile.bio}</p>
+                <div className="text-center">
+                  <h1 className="text-2xl font-bold text-gray-800 mb-1">{profile.displayName}</h1>
+                  <p className="text-gray-600 mb-2">{profile.username}</p>
+                  <p className="text-gray-700 text-sm mb-4">{profile.bio}</p>
                   <button
                     onClick={() => setProfile(prev => ({ ...prev, isEditing: true }))}
-                    className="mt-3 px-4 py-2 bg-primary text-black rounded-lg font-medium hover:shadow-flash transition-all"
+                    className="px-4 py-2 bg-primary text-black rounded-lg font-medium hover:shadow-flash transform hover:scale-105 transition-all"
                   >
                     Edit Profile
                   </button>
@@ -879,22 +892,22 @@ sender: 'You',
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="glass-card p-4 text-center">
+              <div className="text-center">
                 <div className="text-2xl font-bold text-gray-800">{profile.snapsSent}</div>
                 <div className="text-gray-600 text-sm">Snaps Sent</div>
               </div>
-              <div className="glass-card p-4 text-center">
+              <div className="text-center">
                 <div className="text-2xl font-bold text-gray-800">{profile.storiesPosted}</div>
                 <div className="text-gray-600 text-sm">Stories</div>
               </div>
-              <div className="glass-card p-4 text-center">
+              <div className="text-center">
                 <div className="text-2xl font-bold text-gray-800">{profile.friendsCount}</div>
                 <div className="text-gray-600 text-sm">Friends</div>
               </div>
             </div>
 
             {/* Profile Actions */}
-<div className="space-y-3">
+            <div className="space-y-3">
               <button 
                 onClick={openAddFriends}
                 className="w-full glass-card p-4 text-left hover:bg-white/10 transition-all"
@@ -904,7 +917,7 @@ sender: 'You',
                   <span className="text-gray-800">Add Friends</span>
                 </div>
               </button>
-<button 
+              <button 
                 onClick={() => {
                   navigate('/stories-archive')
                   toast.info('📚 Browse your archived stories!', {
@@ -925,18 +938,242 @@ sender: 'You',
                   <span className="text-gray-800">Favorites</span>
                 </div>
               </button>
-              <button className="w-full glass-card p-4 text-left hover:bg-white/10 transition-all">
-                <div className="flex items-center gap-3">
-                  <ApperIcon name="Share" className="w-5 h-5 text-gray-700" />
-                  <span className="text-gray-800">Share Profile</span>
-                </div>
+              <button 
+                className="flex items-center justify-center space-x-3 w-full p-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg"
+                onClick={() => setShowShareModal(true)}
+              >
+                <ApperIcon name="Share" className="w-5 h-5" />
+                <span className="font-medium">Share Profile</span>
               </button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Story Viewer Modal */}
+          {/* Share Profile Modal */}
+          <AnimatePresence>
+            {showShareModal && (
+              <ShareProfileModal 
+                onClose={() => setShowShareModal(false)}
+                isDark={isDark}
+              />
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Share Profile Modal Component
+const ShareProfileModal = ({ onClose, isDark }) => {
+  const [isGeneratingQR, setIsGeneratingQR] = useState(false)
+  const profileUrl = `${window.location.origin}/profile/johndoe123`
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(profileUrl)
+      toast.success('Profile link copied to clipboard!')
+    } catch (err) {
+      toast.error('Failed to copy link. Please try again.')
+    }
+  }
+
+  const handleSocialShare = (platform) => {
+    const encodedUrl = encodeURIComponent(profileUrl)
+    const text = encodeURIComponent('Check out my FlashChat profile!')
+    
+    let shareUrl = ''
+    
+    switch (platform) {
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${encodedUrl}`
+        break
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
+        break
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`
+        break
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${text}%20${encodedUrl}`
+        break
+      case 'instagram':
+        // Instagram doesn't support direct URL sharing, so copy to clipboard
+        handleCopyLink()
+        toast.info('Link copied! Paste it in your Instagram story or bio.')
+        return
+      default:
+        return
+    }
+    
+    window.open(shareUrl, '_blank', 'width=600,height=400')
+    toast.success(`Shared to ${platform.charAt(0).toUpperCase() + platform.slice(1)}!`)
+  }
+
+  const handleEmailShare = () => {
+    const subject = encodeURIComponent('Check out my FlashChat profile!')
+    const body = encodeURIComponent(`Hey! Check out my FlashChat profile: ${profileUrl}`)
+    const mailtoUrl = `mailto:?subject=${subject}&body=${body}`
+    
+    window.location.href = mailtoUrl
+    toast.success('Email client opened!')
+  }
+
+  const generateQR = () => {
+    setIsGeneratingQR(true)
+    // Simulate QR generation
+    setTimeout(() => {
+      setIsGeneratingQR(false)
+      toast.success('QR code generated!')
+    }, 1000)
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        className={`w-full max-w-md rounded-2xl shadow-2xl p-6 ${
+          isDark 
+            ? 'bg-gray-800 border border-gray-700' 
+            : 'bg-white border border-gray-200'
+        }`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            Share Profile
+          </h3>
+          <button
+            onClick={onClose}
+            className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
+              isDark ? 'text-gray-300' : 'text-gray-500'
+            }`}
+          >
+            <ApperIcon name="X" className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Profile Preview */}
+        <div className={`p-4 rounded-xl mb-6 ${
+          isDark ? 'bg-gray-700' : 'bg-gray-50'
+        }`}>
+          <div className="flex items-center space-x-3">
+            <div className="w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
+              <span className="text-white font-bold">JD</span>
+            </div>
+            <div>
+              <h4 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                John Doe
+              </h4>
+              <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                @johndoe123
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Copy Link */}
+        <button
+          onClick={handleCopyLink}
+          className={`w-full p-4 rounded-xl border-2 border-dashed transition-all duration-200 mb-4 ${
+            isDark 
+              ? 'border-gray-600 bg-gray-700 hover:bg-gray-600 text-white' 
+              : 'border-gray-300 bg-gray-50 hover:bg-gray-100 text-gray-900'
+          }`}
+        >
+          <div className="flex items-center justify-center space-x-3">
+            <ApperIcon name="Copy" className="w-5 h-5" />
+            <span className="font-medium">Copy Profile Link</span>
+          </div>
+        </button>
+
+        {/* Social Media Sharing */}
+        <div className="mb-6">
+          <p className={`text-sm font-medium mb-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            Share on social media
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => handleSocialShare('facebook')}
+              className="flex items-center justify-center space-x-2 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            >
+              <ApperIcon name="Facebook" className="w-4 h-4" />
+              <span className="text-sm">Facebook</span>
+            </button>
+            <button
+              onClick={() => handleSocialShare('twitter')}
+              className="flex items-center justify-center space-x-2 p-3 bg-sky-500 hover:bg-sky-600 text-white rounded-lg transition-colors"
+            >
+              <ApperIcon name="Twitter" className="w-4 h-4" />
+              <span className="text-sm">Twitter</span>
+            </button>
+            <button
+              onClick={() => handleSocialShare('linkedin')}
+              className="flex items-center justify-center space-x-2 p-3 bg-blue-700 hover:bg-blue-800 text-white rounded-lg transition-colors"
+            >
+              <ApperIcon name="Linkedin" className="w-4 h-4" />
+              <span className="text-sm">LinkedIn</span>
+            </button>
+            <button
+              onClick={() => handleSocialShare('whatsapp')}
+              className="flex items-center justify-center space-x-2 p-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+            >
+              <ApperIcon name="MessageCircle" className="w-4 h-4" />
+              <span className="text-sm">WhatsApp</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Other Options */}
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            onClick={handleEmailShare}
+            className={`flex items-center justify-center space-x-2 p-3 rounded-lg transition-colors ${
+              isDark 
+                ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+            }`}
+          >
+            <ApperIcon name="Mail" className="w-4 h-4" />
+            <span className="text-sm">Email</span>
+          </button>
+          <button
+            onClick={generateQR}
+            disabled={isGeneratingQR}
+            className={`flex items-center justify-center space-x-2 p-3 rounded-lg transition-colors ${
+              isDark 
+                ? 'bg-gray-700 hover:bg-gray-600 text-white disabled:bg-gray-800' 
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-900 disabled:bg-gray-50'
+            }`}
+          >
+            {isGeneratingQR ? (
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              >
+                <ApperIcon name="Loader2" className="w-4 h-4" />
+              </motion.div>
+            ) : (
+              <ApperIcon name="QrCode" className="w-4 h-4" />
+            )}
+            <span className="text-sm">QR Code</span>
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+{/* Story Viewer Modal */}
       <AnimatePresence>
         {viewingStory && (
           <motion.div
@@ -983,6 +1220,16 @@ sender: 'You',
               </button>
             </motion.div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Share Profile Modal */}
+      <AnimatePresence>
+        {showShareModal && (
+          <ShareProfileModal 
+            onClose={() => setShowShareModal(false)}
+            isDark={isDark}
+          />
         )}
       </AnimatePresence>
     </div>
