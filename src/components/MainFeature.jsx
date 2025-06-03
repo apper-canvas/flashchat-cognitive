@@ -47,10 +47,8 @@ const [stories, setStories] = useState([
   
   // Modal states
   const [showShareModal, setShowShareModal] = useState(false)
-  const [pendingRequests, setPendingRequests] = useState([])
+const [pendingRequests, setPendingRequests] = useState([])
   
-  // Camera states (fix duplicate isCapturing)
-  const [isCapturing, setIsCapturing] = useState(false)
   const sendFriendRequest = (friend) => {
     if (pendingRequests.includes(friend.id)) {
       toast.info('Friend request already sent!', {
@@ -119,9 +117,8 @@ const openAddFriends = () => {
     { id: 'retro', name: 'Retro', css: 'sepia(0.4) saturate(1.8) hue-rotate(315deg) brightness(1.1)' },
 ])
 
-  const cameraRef = useRef(null)
+const cameraRef = useRef(null)
 
-  const selectFilter = (filter) => {
   const selectFilter = (filter) => {
     setSelectedFilter(filter.id)
     toast.success(`🎨 ${filter.name} filter applied!`, {
@@ -948,21 +945,69 @@ sender: 'You',
             </div>
           </motion.div>
         )}
+)}
       </AnimatePresence>
 
-          {/* Share Profile Modal */}
-          <AnimatePresence>
-            {showShareModal && (
-              <ShareProfileModal 
-                onClose={() => setShowShareModal(false)}
-                isDark={isDark}
+      {/* Story Viewer Modal */}
+      <AnimatePresence>
+        {viewingStory && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black z-50 flex items-center justify-center"
+          >
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              className="relative w-full h-full"
+            >
+              <img 
+                src={`https://images.unsplash.com/photo-1516985080664-3a590d9ca1a6?w=400&h=800&fit=crop&auto=format&q=80`}
+                alt="Story"
+                className="w-full h-full object-cover"
               />
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
+              <div className="absolute top-4 left-4 right-4">
+                <div className="flex items-center gap-3 mb-4">
+                  <img 
+                    src={viewingStory.avatar} 
+                    alt={viewingStory.user}
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <span className="text-white font-medium text-shadow">{viewingStory.user}</span>
+                  <span className="text-white/70 text-sm">2h</span>
+                </div>
+                <div className="w-full h-1 bg-white/30 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: '100%' }}
+                    transition={{ duration: 3, ease: "linear" }}
+                    className="h-full bg-white rounded-full"
+                  />
+                </div>
+              </div>
+              <button
+                onClick={() => setViewingStory(null)}
+                className="absolute top-4 right-4 w-8 h-8 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center"
+              >
+                <ApperIcon name="X" className="w-4 h-4 text-white" />
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Share Profile Modal */}
+      <AnimatePresence>
+        {showShareModal && (
+          <ShareProfileModal 
+            onClose={() => setShowShareModal(false)}
+            isDark={isDark}
+          />
+        )}
+      </AnimatePresence>
     </div>
-  )
 }
 
 // Share Profile Modal Component
@@ -1172,68 +1217,5 @@ const ShareProfileModal = ({ onClose, isDark }) => {
       </motion.div>
     </motion.div>
   )
+)
 }
-{/* Story Viewer Modal */}
-      <AnimatePresence>
-        {viewingStory && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black z-50 flex items-center justify-center"
-          >
-            <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              className="relative w-full h-full"
-            >
-              <img 
-                src={`https://images.unsplash.com/photo-1516985080664-3a590d9ca1a6?w=400&h=800&fit=crop&auto=format&q=80`}
-                alt="Story"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute top-4 left-4 right-4">
-                <div className="flex items-center gap-3 mb-4">
-                  <img 
-                    src={viewingStory.avatar} 
-                    alt={viewingStory.user}
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <span className="text-white font-medium text-shadow">{viewingStory.user}</span>
-                  <span className="text-white/70 text-sm">2h</span>
-                </div>
-                <div className="w-full h-1 bg-white/30 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: '100%' }}
-                    transition={{ duration: 3, ease: "linear" }}
-                    className="h-full bg-white rounded-full"
-                  />
-                </div>
-              </div>
-              <button
-                onClick={() => setViewingStory(null)}
-                className="absolute top-4 right-4 w-8 h-8 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center"
-              >
-                <ApperIcon name="X" className="w-4 h-4 text-white" />
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Share Profile Modal */}
-      <AnimatePresence>
-        {showShareModal && (
-          <ShareProfileModal 
-            onClose={() => setShowShareModal(false)}
-            isDark={isDark}
-          />
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
-
-export default MainFeature
