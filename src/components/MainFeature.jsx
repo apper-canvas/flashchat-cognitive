@@ -436,14 +436,22 @@ className="mx-4 mb-4"
             </motion.div>
           )}
         </AnimatePresence>
-            {/* Camera Controls */}
+{/* Camera Controls */}
             <div className="flex items-center justify-between px-6 pb-6">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all"
-              >
-                <ApperIcon name="Sliders" className="w-6 h-6 text-gray-700" />
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all"
+                >
+                  <ApperIcon name="Sliders" className="w-6 h-6 text-gray-700" />
+                </button>
+                <button
+                  onClick={() => navigate('/avatar-creation')}
+                  className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all"
+                >
+                  <ApperIcon name="User" className="w-6 h-6 text-gray-700" />
+                </button>
+              </div>
 
               <motion.button
                 onClick={handleCapture}
@@ -455,12 +463,12 @@ className="mx-4 mb-4"
                   <div className="w-8 h-8 border-4 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-<ApperIcon name="Circle" className="w-12 h-12 text-black" />
+                    <ApperIcon name="Circle" className="w-12 h-12 text-black" />
                   </div>
                 )}
               </motion.button>
 
-<div className="flex items-center gap-3">
+              <div className="flex items-center gap-3">
                 <button 
                   onClick={openMemories}
                   className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all"
