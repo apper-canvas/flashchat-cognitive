@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import ApperIcon from './ApperIcon'
 import { useTheme } from '../contexts/ThemeContext'
 import { toast } from 'react-toastify'
-import { toast } from 'react-toastify'
 import { memoriesService, photoEditingService } from '../services'
 
 const MainFeature = () => {
@@ -240,7 +239,7 @@ const [selectedFilter, setSelectedFilter] = useState('normal')
 
     setTimeout(() => {
       const currentFilter = getCurrentFilter()
-      const mockImage = `https://images.unsplash.com/photo-${Date.now() % 10 === 0 ? '1506905925473-2c1f2e3e' : '1516985080664-3a590d9ca1a6'}?w=400&h=600&fit=crop`
+const mockImage = `https://images.unsplash.com/photo-${Date.now() % 10 === 0 ? '1506905925473-2c1f2e3e' : '1516985080664-3a590d9ca1a6'}?w=400&h=600&fit=crop`
       setCapturedMedia({ 
         type: 'image', 
         url: mockImage, 
@@ -253,8 +252,9 @@ const [selectedFilter, setSelectedFilter] = useState('normal')
         className: 'bg-black border border-primary/30'
       })
     }, 1000)
-
   }
+
+  const [capturedMedia, setCapturedMedia] = useState(null)
 
   const sendMessage = () => {
     if (!newMessage.trim() || !selectedFriend) return
@@ -439,7 +439,7 @@ animate={{ y: 0, opacity: 1 }}
                       >
                         <ApperIcon name="ChevronDown" className={`w-4 h-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`} />
                       </button>
-                    </div>
+</div>
                   <div className="flex gap-3 overflow-x-auto pb-2">
                       {filters.map((filter) => (
                         <motion.button
@@ -449,7 +449,7 @@ animate={{ y: 0, opacity: 1 }}
                           transition={{ delay: filters.indexOf(filter) * 0.05 }}
                           onClick={() => selectFilter(filter)}
                           className={`filter-button ${selectedFilter === filter.id ? 'active' : ''}`}
->
+                        >
                           <div className="flex flex-col items-center justify-center h-full p-1">
                             <div 
                               className="w-8 h-8 bg-gradient-to-br from-primary/40 to-secondary/40 rounded-lg mb-1 filter-preview"
@@ -457,14 +457,14 @@ animate={{ y: 0, opacity: 1 }}
                             />
                             <span className={`text-xs font-medium truncate ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                               {filter.name}
-{filter.name}
                             </span>
                           </div>
-                  ))}
+                        </motion.button>
+                      ))}
                 </div>
               </div>
             </motion.div>
-)}
+            )}
         </AnimatePresence>
 
         {/* Camera Controls */}
@@ -541,16 +541,16 @@ animate={{ y: 0, opacity: 1 }}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <div className="absolute bottom-3 left-3 flex items-center gap-2">
+<div className="absolute bottom-3 left-3 flex items-center gap-2">
                         <img 
                           src={story.avatar} 
-src={story.avatar} 
                           alt={story.user}
                           className="w-6 h-6 rounded-full border border-white/50"
                         />
                         <span className="text-white text-xs font-medium text-shadow">
                           {story.user}
                         </span>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -1111,19 +1111,20 @@ value={newMessage}
                 <ApperIcon name="X" className="w-4 h-4 text-white" />
               </button>
             </motion.div>
-          </motion.div>
+</motion.div>
         )}
       </AnimatePresence>
-</AnimatePresence>
 
       {/* Share Profile Modal */}
       <AnimatePresence>
+        {showShareModal && (
           <ShareProfileModal 
             onClose={() => setShowShareModal(false)}
             isDark={isDark}
           />
         )}
       </AnimatePresence>
+
       <AnimatePresence>
         {showMemoriesModal && (
           <motion.div
@@ -1318,10 +1319,10 @@ value={newMessage}
                   <ApperIcon name="Grid" className="w-4 h-4" />
                   Back to Grid
                 </button>
-              </div>
+</div>
             </motion.div>
           </motion.div>
-)}
+        )}
       </AnimatePresence>
     </div>
   )
@@ -1508,6 +1509,192 @@ value={newMessage}
         icon: false,
         className: 'bg-black border border-red-500/30'
       })
+    }
+  }
+}
+  // Photo editing functions
+  const openPhotoEditor = async () => {
+    if (!capturedMedia) return
+    
+    try {
+      const session = await photoEditingService.createSession(capturedMedia)
+      setEditingSession(session)
+      setShowPhotoEditor(true)
+      setEditTab('edit')
+      setEditParams({
+        brightness: 0,
+        contrast: 1,
+        saturation: 1,
+        blur: 0
+      })
+      setPlacedStickers([])
+      setSelectedMusic(null)
+      
+      toast.success('🎨 Photo editor opened!', {
+        icon: false,
+        className: 'bg-black border border-primary/30'
+      })
+    } catch (error) {
+      toast.error('Failed to open photo editor', {
+        icon: false,
+        className: 'bg-black border border-red-500/30'
+      })
+    }
+  }
+
+  const closePhotoEditor = () => {
+    setShowPhotoEditor(false)
+    setEditingSession(null)
+    setSelectedMusic(null)
+    setMusicPlaying(false)
+    setPlacedStickers([])
+    
+    toast.info('Photo editor closed', {
+      icon: false,
+      className: 'bg-black border border-gray-500/30'
+    })
+  }
+
+  const updateEditParam = async (param, value) => {
+    setEditParams(prev => ({ ...prev, [param]: value }))
+    
+    if (editingSession) {
+      try {
+        await photoEditingService.applyAdjustment(editingSession.id, param, value)
+      } catch (error) {
+        console.error('Failed to update edit parameter:', error)
+      }
+    }
+  }
+
+  const applyFilterToEdit = async (filter) => {
+    setSelectedFilter(filter.id)
+    
+    if (editingSession) {
+      try {
+        await photoEditingService.applyFilter(editingSession.id, filter)
+        toast.success(`🎨 ${filter.name} filter applied!`, {
+          icon: false,
+          className: 'bg-black border border-primary/30'
+        })
+      } catch (error) {
+        toast.error('Failed to apply filter', {
+          icon: false,
+          className: 'bg-black border border-red-500/30'
+        })
+      }
+    }
+  }
+
+  const selectMusicTrack = async (track) => {
+    setSelectedMusic(track)
+    setMusicPlaying(false)
+    
+    if (editingSession) {
+      try {
+        await photoEditingService.addMusic(editingSession.id, track)
+        toast.success(`🎵 ${track.title} added!`, {
+          icon: false,
+          className: 'bg-black border border-primary/30'
+        })
+      } catch (error) {
+        toast.error('Failed to add music', {
+          icon: false,
+          className: 'bg-black border border-red-500/30'
+        })
+      }
+    }
+  }
+
+  const toggleMusicPlayback = () => {
+    setMusicPlaying(!musicPlaying)
+    toast.info(`🎵 Music ${!musicPlaying ? 'playing' : 'paused'}`, {
+      icon: false,
+      className: 'bg-black border border-primary/30'
+    })
+  }
+
+  const addSticker = async (stickerContent) => {
+    const sticker = {
+      id: Date.now(),
+      content: stickerContent,
+      position: {
+        x: Math.random() * 60 + 20, // Random position between 20-80%
+        y: Math.random() * 60 + 20
+      },
+      size: 30
+    }
+    
+    if (editingSession) {
+      try {
+        const updatedSession = await photoEditingService.addSticker(editingSession.id, sticker)
+        setPlacedStickers(updatedSession.edits.stickers)
+        
+        toast.success(`✨ Sticker added!`, {
+          icon: false,
+          className: 'bg-black border border-primary/30'
+        })
+      } catch (error) {
+        toast.error('Failed to add sticker', {
+          icon: false,
+          className: 'bg-black border border-red-500/30'
+        })
+      }
+    }
+  }
+
+  const removeSticker = async (stickerId) => {
+    if (editingSession) {
+      try {
+        const updatedSession = await photoEditingService.removeSticker(editingSession.id, stickerId)
+        setPlacedStickers(updatedSession.edits.stickers)
+        
+        toast.success('Sticker removed', {
+          icon: false,
+          className: 'bg-black border border-secondary/30'
+        })
+      } catch (error) {
+        toast.error('Failed to remove sticker', {
+          icon: false,
+          className: 'bg-black border border-red-500/30'
+        })
+      }
+    }
+  }
+
+  const saveEditedPhoto = async () => {
+    if (!editingSession) return
+    
+    try {
+      const editedPhoto = await photoEditingService.saveEditedPhoto(editingSession.id, 'Edited Photo')
+      
+      // Update the captured media with edited version
+      setCapturedMedia({
+        ...capturedMedia,
+        ...editedPhoto
+      })
+      
+      // Save to memories
+      await memoriesService.create({
+        title: editedPhoto.title,
+        url: editedPhoto.url,
+        thumbnail: editedPhoto.thumbnail,
+        filter: editedPhoto.filter,
+        location: 'Camera Roll'
+      })
+      
+      closePhotoEditor()
+      
+      toast.success('📸 Photo saved successfully!', {
+        icon: false,
+        className: 'bg-black border border-green-500/30'
+      })
+    } catch (error) {
+      toast.error('Failed to save photo', {
+        icon: false,
+        className: 'bg-black border border-red-500/30'
+      })
+})
     }
   }
 }
@@ -1722,7 +1909,3 @@ const ShareProfileModal = ({ onClose, isDark }) => {
 }
 
 export default MainFeature
-</AnimatePresence>
-    </div>
-  )
-}
