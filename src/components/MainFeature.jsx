@@ -460,12 +460,12 @@ className="mx-4 mb-4"
                 )}
               </motion.button>
 
-              <div className="flex items-center gap-3">
+<div className="flex items-center gap-3">
                 <button 
                   onClick={openMemories}
                   className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all"
                 >
-                  <ApperIcon name="Images" className="w-6 h-6 text-gray-700" />
+                  <ApperIcon name="Archive" className="w-6 h-6 text-gray-700" />
                 </button>
                 <button className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all">
                   <ApperIcon name="RotateCcw" className="w-6 h-6 text-gray-700" />
