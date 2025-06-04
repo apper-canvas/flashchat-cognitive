@@ -1009,11 +1009,211 @@ return (
       {/* Share Profile Modal */}
       <AnimatePresence>
         {showShareModal && (
-          <ShareProfileModal 
+<ShareProfileModal 
             onClose={() => setShowShareModal(false)}
             isDark={isDark}
           />
-)}
+        )}
+      </AnimatePresence>
+      {/* Memories Modal */}
+      <AnimatePresence>
+        {showMemoriesModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={() => setShowMemoriesModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-4xl h-[80vh] bg-white rounded-2xl shadow-2xl overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">My Memories</h3>
+                  <p className="text-gray-600">{memories.length} saved photos</p>
+                </div>
+                <button
+                  onClick={() => setShowMemoriesModal(false)}
+                  className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                >
+                  <ApperIcon name="X" className="w-6 h-6 text-gray-500" />
+                </button>
+              </div>
+
+              {/* Search */}
+              <div className="p-6 border-b border-gray-200">
+                <div className="relative">
+                  <ApperIcon name="Search" className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    value={memoriesSearchQuery}
+                    onChange={(e) => setMemoriesSearchQuery(e.target.value)}
+                    placeholder="Search memories..."
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary/50"
+                  />
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto p-6">
+                {memoriesLoading ? (
+                  <div className="flex items-center justify-center h-64">
+                    <div className="text-center">
+                      <div className="w-8 h-8 border-4 border-gray-300 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
+                      <p className="text-gray-600">Loading memories...</p>
+                    </div>
+                  </div>
+                ) : memoriesError ? (
+                  <div className="flex items-center justify-center h-64">
+                    <div className="text-center">
+                      <ApperIcon name="AlertCircle" className="w-16 h-16 text-red-500 mx-auto mb-4" />
+                      <p className="text-red-600 font-medium">Failed to load memories</p>
+                      <button 
+                        onClick={loadMemories}
+                        className="mt-2 px-4 py-2 bg-primary text-black rounded-lg hover:shadow-flash transition-all"
+                      >
+                        Try Again
+                      </button>
+                    </div>
+                  </div>
+                ) : filteredMemories.length === 0 ? (
+                  <div className="flex items-center justify-center h-64">
+                    <div className="text-center">
+                      <ApperIcon name="Image" className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-600 font-medium">
+                        {memoriesSearchQuery ? 'No memories found' : 'No memories saved yet'}
+                      </p>
+                      {!memoriesSearchQuery && (
+                        <p className="text-gray-500 text-sm mt-2">
+                          Capture some photos to start building your memories!
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    {filteredMemories.map((memory) => (
+                      <motion.div
+                        key={memory.id}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: filteredMemories.indexOf(memory) * 0.05 }}
+                        className="group relative aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden cursor-pointer"
+                        onClick={() => viewMemory(memory)}
+                      >
+                        <img
+                          src={memory.thumbnail}
+                          alt={memory.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                          style={{ filter: memory.filter?.css || 'none' }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="absolute bottom-3 left-3 right-3">
+                            <h4 className="text-white font-medium text-sm truncate">{memory.title}</h4>
+                            <p className="text-white/70 text-xs">{new Date(memory.timestamp).toLocaleDateString()}</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            if (window.confirm('Delete this memory?')) {
+                              deleteMemory(memory.id)
+                            }
+                          }}
+                          className="absolute top-2 right-2 w-8 h-8 bg-red-500/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <ApperIcon name="Trash2" className="w-4 h-4 text-white" />
+                        </button>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Memory Viewer Modal */}
+      <AnimatePresence>
+        {showMemoryViewer && selectedMemory && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black z-50 flex items-center justify-center"
+            onClick={() => setShowMemoryViewer(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              className="relative w-full h-full max-w-4xl max-h-screen p-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={selectedMemory.url}
+                alt={selectedMemory.title}
+                className="w-full h-full object-contain rounded-xl"
+                style={{ filter: selectedMemory.filter?.css || 'none' }}
+              />
+              
+              {/* Controls */}
+              <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
+                <div className="bg-black/50 backdrop-blur-sm rounded-xl p-3 text-white">
+                  <h3 className="font-semibold">{selectedMemory.title}</h3>
+                  <p className="text-sm text-white/70">{new Date(selectedMemory.timestamp).toLocaleString()}</p>
+                  {selectedMemory.location && (
+                    <p className="text-sm text-white/70">📍 {selectedMemory.location}</p>
+                  )}
+                  {selectedMemory.filter?.name && (
+                    <p className="text-sm text-primary">🎨 {selectedMemory.filter.name} filter</p>
+                  )}
+                </div>
+                
+                <button
+                  onClick={() => setShowMemoryViewer(false)}
+                  className="w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+                >
+                  <ApperIcon name="X" className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Bottom Actions */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-3">
+                <button
+                  onClick={() => {
+                    if (window.confirm('Delete this memory?')) {
+                      deleteMemory(selectedMemory.id)
+                      setShowMemoryViewer(false)
+                    }
+                  }}
+                  className="px-4 py-2 bg-red-500/80 backdrop-blur-sm rounded-lg text-white hover:bg-red-500 transition-colors flex items-center gap-2"
+                >
+                  <ApperIcon name="Trash2" className="w-4 h-4" />
+                  Delete
+                </button>
+                
+                <button
+                  onClick={() => {
+                    setShowMemoryViewer(false)
+                    setShowMemoriesModal(true)
+                  }}
+                  className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors flex items-center gap-2"
+                >
+                  <ApperIcon name="Grid" className="w-4 h-4" />
+                  Back to Grid
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   )

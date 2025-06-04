@@ -1,0 +1,1 @@
+export { default as memoriesService } from './api/memoriesService.js'
