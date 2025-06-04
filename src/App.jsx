@@ -10,6 +10,7 @@ import NotFound from './pages/NotFound'
 import 'react-toastify/dist/ReactToastify.css'
 import Favorites from './pages/Favorites'
 import FavoriteCameraFilters from './pages/FavoriteCameraFilters'
+import AvatarCreation from './pages/AvatarCreation'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path="/stories-archive" element={<StoriesArchive />} />
               <Route path="/favorites" element={<Favorites />} />
               <Route path="/favorite-filters" element={<FavoriteCameraFilters />} />
+              <Route path="/avatar-creation" element={<AvatarCreation />} />
               <Route path="/" element={<Home />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

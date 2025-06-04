@@ -91,6 +91,18 @@
   .filter-transition {
     transition: filter 0.3s ease-in-out;
   }
+
+  .avatar-preview {
+    @apply transform transition-all duration-300 hover:scale-105;
+  }
+  
+  .color-picker {
+    @apply relative z-50 rounded-lg shadow-lg;
+  }
+  
+  .avatar-card {
+    @apply glass-card p-6 hover:shadow-neu-dark transition-all duration-300;
+  }
 }
 
 /* Custom scrollbar */
