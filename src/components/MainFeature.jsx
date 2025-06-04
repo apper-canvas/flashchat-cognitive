@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import ApperIcon from './ApperIcon'
 import { useTheme } from '../contexts/ThemeContext'
 import { toast } from 'react-toastify'
+import { memoriesService } from '../services'
 
 const MainFeature = () => {
   const [currentView, setCurrentView] = useState('camera') // camera, stories, chat
@@ -12,7 +13,7 @@ const MainFeature = () => {
   const [messages, setMessages] = useState([
     { id: 1, sender: 'alex_flash', text: '👻', type: 'received', timer: 5, viewed: false },
     { id: 2, sender: 'sarah_snap', text: 'Check this out! 📸', type: 'received', timer: 10, viewed: false },
-{ id: 3, sender: 'mike_moments', text: 'Party tonight? 🎉', type: 'received', timer: 3, viewed: true }
+    { id: 3, sender: 'mike_moments', text: 'Party tonight? 🎉', type: 'received', timer: 3, viewed: true }
   ])
   const [stories, setStories] = useState([
     { id: 1, user: 'alex_flash', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', hasNew: true },
@@ -23,6 +24,15 @@ const MainFeature = () => {
 
   const navigate = useNavigate()
   const { isDark } = useTheme()
+  
+  // Memories state
+  const [showMemoriesModal, setShowMemoriesModal] = useState(false)
+  const [memories, setMemories] = useState([])
+  const [memoriesLoading, setMemoriesLoading] = useState(false)
+  const [memoriesError, setMemoriesError] = useState(null)
+  const [memoriesSearchQuery, setMemoriesSearchQuery] = useState('')
+  const [selectedMemory, setSelectedMemory] = useState(null)
+  const [showMemoryViewer, setShowMemoryViewer] = useState(false)
   
   // Profile state
   const [profile, setProfile] = useState({
@@ -45,7 +55,7 @@ const MainFeature = () => {
   // Story viewing state
   const [viewingStory, setViewingStory] = useState(null)
   
-// Modal states
+  // Modal states
   const [showShareModal, setShowShareModal] = useState(false)
   const [pendingRequests, setPendingRequests] = useState([])
   
@@ -67,13 +77,14 @@ const MainFeature = () => {
     })
   }
 
-const openAddFriends = () => {
+  const openAddFriends = () => {
     navigate('/add-friends')
     toast.info('🔍 Discover and add new friends!', {
       icon: false,
       className: 'bg-black border border-primary/30'
     })
   }
+  
   const [settings, setSettings] = useState({
     notifications: {
       messages: true,
@@ -93,6 +104,7 @@ const openAddFriends = () => {
       soundEffects: true
     }
   })
+  
   const [emojis] = useState({
     smileys: ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥'],
     hearts: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️', '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐'],
@@ -102,6 +114,7 @@ const openAddFriends = () => {
     objects: ['⌚', '📱', '📲', '💻', '⌨️', '🖥️', '🖨️', '🖱️', '🖲️', '🕹️', '🗜️', '💽', '💾', '💿', '📀', '📼', '📷', '📸', '📹', '🎥', '📽️', '🎞️', '📞', '☎️', '📟', '📠', '📺', '📻', '🎙️', '🎚️', '🎛️', '🧭', '⏱️', '⏲️', '⏰', '🕰️', '⏳', '⌛', '📡', '🔋'],
     symbols: ['💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️', '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓', '🆔', '⚛️', '🉑', '☢️', '☣️', '📴']
   })
+  
   const [mediaTimer, setMediaTimer] = useState(null)
   const [selectedFilter, setSelectedFilter] = useState('normal')
   const [showFilters, setShowFilters] = useState(false)
@@ -113,12 +126,67 @@ const openAddFriends = () => {
     { id: 'cold', name: 'Cold', css: 'hue-rotate(180deg) saturate(1.3)' },
     { id: 'warm', name: 'Warm', css: 'hue-rotate(25deg) saturate(1.4) brightness(1.1)' },
     { id: 'bright', name: 'Bright', css: 'brightness(1.4) contrast(1.1)' },
-{ id: 'bright', name: 'Bright', css: 'brightness(1.4) contrast(1.1)' },
     { id: 'dark', name: 'Dark', css: 'brightness(0.7) contrast(1.3)' },
     { id: 'retro', name: 'Retro', css: 'sepia(0.4) saturate(1.8) hue-rotate(315deg) brightness(1.1)' }
   ])
 
   const cameraRef = useRef(null)
+  
+  // Memories functionality
+  const filteredMemories = memories.filter(memory =>
+    memory.title.toLowerCase().includes(memoriesSearchQuery.toLowerCase()) ||
+    memory.location?.toLowerCase().includes(memoriesSearchQuery.toLowerCase())
+  )
+
+  const openMemories = async () => {
+    setShowMemoriesModal(true)
+    await loadMemories()
+  }
+
+  const loadMemories = async () => {
+    try {
+      setMemoriesLoading(true)
+      setMemoriesError(null)
+      const data = await memoriesService.getAll()
+      setMemories(data)
+      toast.success('📸 Memories loaded!', {
+        icon: false,
+        className: 'bg-black border border-primary/30'
+      })
+    } catch (error) {
+      setMemoriesError(error.message)
+      toast.error('Failed to load memories', {
+        icon: false,
+        className: 'bg-black border border-red-500/30'
+      })
+    } finally {
+      setMemoriesLoading(false)
+    }
+  }
+
+  const viewMemory = (memory) => {
+    setSelectedMemory(memory)
+    setShowMemoryViewer(true)
+    setShowMemoriesModal(false)
+  }
+
+  const deleteMemory = async (memoryId) => {
+    try {
+      await memoriesService.delete(memoryId)
+      setMemories(prev => prev.filter(m => m.id !== memoryId))
+      toast.success('🗑️ Memory deleted!', {
+        icon: false,
+        className: 'bg-black border border-primary/30'
+      })
+    } catch (error) {
+      toast.error('Failed to delete memory', {
+        icon: false,
+        className: 'bg-black border border-red-500/30'
+      })
+    }
+  }
+
+  const selectFilter = (filter) => {
     setSelectedFilter(filter.id)
     toast.success(`🎨 ${filter.name} filter applied!`, {
       icon: false,
@@ -330,13 +398,13 @@ return (
                   initial={{ y: 100, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 100, opacity: 0 }}
-                  className="mx-4 mb-4"
+className="mx-4 mb-4"
                 >
-<div className="glass-card p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className={`font-semibold text-sm ${isDark ? 'text-white' : 'text-gray-800'}`}>Choose Filter</h3>
-                    <button
-                      onClick={() => setShowFilters(false)}
+                  <div className="glass-card p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className={`font-semibold text-sm ${isDark ? 'text-white' : 'text-gray-800'}`}>Choose Filter</h3>
+                      <button
+                        onClick={() => setShowFilters(false)}
                       className="w-6 h-6 flex items-center justify-center"
                     >
                       <ApperIcon name="ChevronDown" className={`w-4 h-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`} />
@@ -353,13 +421,13 @@ return (
                           className={`filter-button ${selectedFilter === filter.id ? 'active' : ''}`}
                         >
                           <div className="flex flex-col items-center justify-center h-full p-1">
-                            <div 
+<div 
                               className="w-8 h-8 bg-gradient-to-br from-primary/40 to-secondary/40 rounded-lg mb-1 filter-preview"
-style={{ filter: filter.css }}
-                        />
-                        <span className={`text-xs font-medium truncate ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                          {filter.name}
-                        </span>
+                              style={{ filter: filter.css }}
+                            />
+                            <span className={`text-xs font-medium truncate ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                              {filter.name}
+                            </span>
                       </div>
                     </motion.button>
                   ))}
@@ -387,14 +455,14 @@ style={{ filter: filter.css }}
                   <div className="w-8 h-8 border-4 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-                    <ApperIcon name="Circle" className="w-12 h-12 text-black" />
+<ApperIcon name="Circle" className="w-12 h-12 text-black" />
                   </div>
-)}
-            </motion.button>
+                )}
+              </motion.button>
 
-            <div className="flex items-center gap-3">
-              <button 
-                onClick={openMemories}
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={openMemories}
                   className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all"
                 >
                   <ApperIcon name="Images" className="w-6 h-6 text-gray-700" />
@@ -403,8 +471,7 @@ style={{ filter: filter.css }}
                   <ApperIcon name="RotateCcw" className="w-6 h-6 text-gray-700" />
                 </button>
               </div>
-</div>
-          </div>
+            </div>
           </motion.div>
         )}
         {currentView === 'stories' && (
