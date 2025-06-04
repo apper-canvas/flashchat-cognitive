@@ -24,7 +24,7 @@ const ThemeToggle = () => {
 return (
     <button
       onClick={handleToggle}
-      className="fixed top-4 right-16 z-50 p-3 rounded-full bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-black/30 transition-all duration-300 group shadow-lg hover:shadow-xl"
+      className="fixed top-4 right-20 z-50 p-3 rounded-full bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-black/30 transition-all duration-300 group shadow-lg hover:shadow-xl"
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       <div className="relative w-6 h-6">
