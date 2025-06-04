@@ -437,19 +437,13 @@ className="mx-4 mb-4"
           )}
         </AnimatePresence>
 {/* Camera Controls */}
-            <div className="flex items-center justify-between px-6 pb-6">
+<div className="flex items-center justify-between px-6 pb-6">
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all"
                 >
                   <ApperIcon name="Sliders" className="w-6 h-6 text-gray-700" />
-                </button>
-                <button
-                  onClick={() => navigate('/avatar-creation')}
-                  className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all"
-                >
-                  <ApperIcon name="User" className="w-6 h-6 text-gray-700" />
                 </button>
               </div>
 
