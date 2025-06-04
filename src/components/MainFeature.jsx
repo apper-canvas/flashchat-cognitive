@@ -12,9 +12,9 @@ const MainFeature = () => {
   const [messages, setMessages] = useState([
     { id: 1, sender: 'alex_flash', text: '👻', type: 'received', timer: 5, viewed: false },
     { id: 2, sender: 'sarah_snap', text: 'Check this out! 📸', type: 'received', timer: 10, viewed: false },
-    { id: 3, sender: 'mike_moments', text: 'Party tonight? 🎉', type: 'received', timer: 3, viewed: true }
+{ id: 3, sender: 'mike_moments', text: 'Party tonight? 🎉', type: 'received', timer: 3, viewed: true }
   ])
-const [stories, setStories] = useState([
+  const [stories, setStories] = useState([
     { id: 1, user: 'alex_flash', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', hasNew: true },
     { id: 2, user: 'sarah_snap', avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face', hasNew: true },
     { id: 3, user: 'mike_moments', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face', hasNew: false },
@@ -45,9 +45,9 @@ const [stories, setStories] = useState([
   // Story viewing state
   const [viewingStory, setViewingStory] = useState(null)
   
-  // Modal states
+// Modal states
   const [showShareModal, setShowShareModal] = useState(false)
-const [pendingRequests, setPendingRequests] = useState([])
+  const [pendingRequests, setPendingRequests] = useState([])
   
   const sendFriendRequest = (friend) => {
     if (pendingRequests.includes(friend.id)) {
@@ -113,13 +113,12 @@ const openAddFriends = () => {
     { id: 'cold', name: 'Cold', css: 'hue-rotate(180deg) saturate(1.3)' },
     { id: 'warm', name: 'Warm', css: 'hue-rotate(25deg) saturate(1.4) brightness(1.1)' },
     { id: 'bright', name: 'Bright', css: 'brightness(1.4) contrast(1.1)' },
+{ id: 'bright', name: 'Bright', css: 'brightness(1.4) contrast(1.1)' },
     { id: 'dark', name: 'Dark', css: 'brightness(0.7) contrast(1.3)' },
-    { id: 'retro', name: 'Retro', css: 'sepia(0.4) saturate(1.8) hue-rotate(315deg) brightness(1.1)' },
-])
+    { id: 'retro', name: 'Retro', css: 'sepia(0.4) saturate(1.8) hue-rotate(315deg) brightness(1.1)' }
+  ])
 
-const cameraRef = useRef(null)
-
-  const selectFilter = (filter) => {
+  const cameraRef = useRef(null)
     setSelectedFilter(filter.id)
     toast.success(`🎨 ${filter.name} filter applied!`, {
       icon: false,
@@ -333,17 +332,17 @@ return (
                   exit={{ y: 100, opacity: 0 }}
                   className="mx-4 mb-4"
                 >
-                  <div className="glass-card p-4">
-                    <div className="flex items-center justify-between mb-3">
-<h3 className="text-gray-800 font-semibold text-sm">Choose Filter</h3>
-                      <button
-                        onClick={() => setShowFilters(false)}
-                        className="w-6 h-6 flex items-center justify-center"
-                      >
-<ApperIcon name="ChevronDown" className="w-4 h-4 text-gray-600" />
-                      </button>
-                    </div>
-                    <div className="flex gap-3 overflow-x-auto pb-2">
+<div className="glass-card p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className={`font-semibold text-sm ${isDark ? 'text-white' : 'text-gray-800'}`}>Choose Filter</h3>
+                    <button
+                      onClick={() => setShowFilters(false)}
+                      className="w-6 h-6 flex items-center justify-center"
+                    >
+                      <ApperIcon name="ChevronDown" className={`w-4 h-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`} />
+                    </button>
+                  </div>
+                  <div className="flex gap-3 overflow-x-auto pb-2">
                       {filters.map((filter) => (
                         <motion.button
                           key={filter.id}
@@ -356,20 +355,19 @@ return (
                           <div className="flex flex-col items-center justify-center h-full p-1">
                             <div 
                               className="w-8 h-8 bg-gradient-to-br from-primary/40 to-secondary/40 rounded-lg mb-1 filter-preview"
-                              style={{ filter: filter.css }}
-                            />
-<span className="text-xs text-gray-700 font-medium truncate">
-                              {filter.name}
-                            </span>
-                          </div>
-                        </motion.button>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-</AnimatePresence>
-
+style={{ filter: filter.css }}
+                        />
+                        <span className={`text-xs font-medium truncate ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                          {filter.name}
+                        </span>
+                      </div>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
             {/* Camera Controls */}
             <div className="flex items-center justify-between px-6 pb-6">
               <button
@@ -391,18 +389,24 @@ return (
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
                     <ApperIcon name="Circle" className="w-12 h-12 text-black" />
                   </div>
-                )}
-              </motion.button>
+)}
+            </motion.button>
 
-              <button className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all">
-                <ApperIcon name="RotateCcw" className="w-6 h-6 text-gray-700" />
-              </button>
-            </div>
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={openMemories}
+                  className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all"
+                >
+                  <ApperIcon name="Images" className="w-6 h-6 text-gray-700" />
+                </button>
+                <button className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all">
+                  <ApperIcon name="RotateCcw" className="w-6 h-6 text-gray-700" />
+                </button>
+              </div>
+</div>
+          </div>
           </motion.div>
-
         )}
-
-        {/* Stories View */}
         {currentView === 'stories' && (
           <motion.div
             key="stories"
@@ -436,9 +440,9 @@ return (
                           src={story.avatar} 
                           alt={story.user}
                           className="w-6 h-6 rounded-full border border-white/50"
-                        />
+/>
                         <span className="text-white text-xs font-medium text-shadow">
-{story.user}
+                          {story.user}
                         </span>
                       </div>
                     </div>
@@ -479,10 +483,10 @@ return (
                             </span>
                           </div>
                           <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-black" />
-                        </div>
+</div>
                         <div className="flex-1">
-<h3 className="font-semibold text-gray-800">{friend}</h3>
-                          <p className="text-sm text-gray-600">Tap to chat</p>
+                          <h3 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-800'}`}>{friend}</h3>
+                          <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Tap to chat</p>
                         </div>
                         <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
                       </div>
@@ -496,21 +500,20 @@ return (
                 <div className="flex items-center gap-3 px-4 pb-4 border-b border-white/10">
                   <button 
                     onClick={() => setSelectedFriend(null)}
-                    className="w-8 h-8 flex items-center justify-center"
-                  >
-<ApperIcon name="ArrowLeft" className="w-5 h-5 text-gray-800" />
-                  </button>
-                  <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
-                    <span className="text-black font-bold">
-                      {selectedFriend[0].toUpperCase()}
-                    </span>
-                  </div>
-                  <div>
-<h3 className="font-semibold text-gray-800">{selectedFriend}</h3>
-                    <p className="text-xs text-gray-600">Active now</p>
-                  </div>
+className="w-8 h-8 flex items-center justify-center"
+                >
+                  <ApperIcon name="ArrowLeft" className={`w-5 h-5 ${isDark ? 'text-white' : 'text-gray-800'}`} />
+                </button>
+                <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                  <span className="text-black font-bold">
+                    {selectedFriend[0].toUpperCase()}
+                  </span>
                 </div>
-
+                <div>
+                  <h3 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-800'}`}>{selectedFriend}</h3>
+                  <p className={`text-xs ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Active now</p>
+                </div>
+              </div>
                 {/* Messages */}
                 <div className="flex-1 p-4 space-y-4 overflow-y-auto">
                   {messages.map((message) => (
@@ -524,9 +527,9 @@ return (
                         onClick={() => viewMessage(message.id)}
                         className={`chat-bubble cursor-pointer ${
                           message.type === 'sent'
-                            ? 'bg-primary text-black'
-                            : message.viewed
-? 'bg-gray-200 text-gray-500'
+? 'bg-primary text-black'
+                          : message.viewed
+                            ? 'bg-gray-200 text-gray-500'
                             : 'bg-secondary text-white'
                         } ${!message.viewed && message.type === 'received' ? 'animate-bounce-soft' : ''}`}
                       >
@@ -547,86 +550,87 @@ return (
                   ))}
                 </div>
 
-                {/* Message Input */}
-                <div className="p-4 border-t border-white/10">
-{/* Emoji Picker */}
-                  <AnimatePresence>
-                    {showEmojiPicker && (
-                      <motion.div
-                        initial={{ y: 50, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: 50, opacity: 0 }}
-                        className="mb-4"
-                      >
-                        <div className="glass-card p-4 max-h-64 overflow-hidden">
-                          {/* Category Tabs */}
-                          <div className="flex gap-2 mb-3 overflow-x-auto">
-                            {Object.keys(emojis).map((category) => (
-                              <button
-                                key={category}
-                                onClick={() => setEmojiCategory(category)}
-                                className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                                  emojiCategory === category
-                                    ? 'bg-primary text-black'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                }`}
-                              >
-                                {category.charAt(0).toUpperCase() + category.slice(1)}
-                              </button>
-                            ))}
-                          </div>
-                          
-                          {/* Emoji Grid */}
-                          <div className="grid grid-cols-8 gap-2 max-h-32 overflow-y-auto">
-                            {emojis[emojiCategory].map((emoji, index) => (
-                              <motion.button
-                                key={index}
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                transition={{ delay: index * 0.01 }}
-                                onClick={() => insertEmoji(emoji)}
-                                className="w-8 h-8 flex items-center justify-center text-lg hover:bg-gray-200 rounded-lg transition-all transform hover:scale-110"
-                              >
-                                {emoji}
-                              </motion.button>
-                            ))}
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                  <div className="flex gap-3 items-center">
-<input
-                      type="text"
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                      placeholder="Type a message..."
-                      className="flex-1 bg-gray-100 border border-gray-300 rounded-full px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:border-primary/50"
-                    />
-                    <button
-                      onClick={toggleEmojiPicker}
-                      className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                        showEmojiPicker 
-                          ? 'bg-primary text-black' 
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                      }`}
->
-                      <ApperIcon name="Smile" className="w-5 h-5" />
-                    </button>
-                    <button
-                      onClick={sendMessage}
-                      className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:shadow-flash transform hover:scale-105 transition-all"
+{/* Message Input */}
+              <div className="p-4 border-t border-white/10">
+                {/* Emoji Picker */}
+                <AnimatePresence>
+                  {showEmojiPicker && (
+                    <motion.div
+                      initial={{ y: 50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: 50, opacity: 0 }}
+                      className="mb-4"
                     >
-                      <ApperIcon name="Send" className="w-5 h-5" />
-                    </button>
-                  </div>
+                      <div className="glass-card p-4 max-h-64 overflow-hidden">
+                        {/* Category Tabs */}
+                        <div className="flex gap-2 mb-3 overflow-x-auto">
+                          {Object.keys(emojis).map((category) => (
+                            <button
+                              key={category}
+                              onClick={() => setEmojiCategory(category)}
+                              className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                                emojiCategory === category
+                                  ? 'bg-primary text-black'
+                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                              }`}
+                            >
+                              {category.charAt(0).toUpperCase() + category.slice(1)}
+                            </button>
+                          ))}
+                        </div>
+                        
+                        {/* Emoji Grid */}
+                        <div className="grid grid-cols-8 gap-2 max-h-32 overflow-y-auto">
+                          {emojis[emojiCategory].map((emoji, index) => (
+                            <motion.button
+                              key={index}
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ delay: index * 0.01 }}
+                              onClick={() => insertEmoji(emoji)}
+                              className="w-8 h-8 flex items-center justify-center text-lg hover:bg-gray-200 rounded-lg transition-all transform hover:scale-110"
+                            >
+                              {emoji}
+                            </motion.button>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <div className="flex gap-3 items-center">
+                  <input
+                    type="text"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                    placeholder="Type a message..."
+                    className="flex-1 bg-gray-100 border border-gray-300 rounded-full px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:border-primary/50"
+                  />
+                  <button
+                    onClick={toggleEmojiPicker}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                      showEmojiPicker 
+                        ? 'bg-primary text-black' 
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    <ApperIcon name="Smile" className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={sendMessage}
+                    className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:shadow-flash transform hover:scale-105 transition-all"
+                  >
+                    <ApperIcon name="Send" className="w-5 h-5" />
+                  </button>
                 </div>
               </div>
-            )}
-          </motion.div>
-        )}
-{/* Settings View */}
+            </div>
+          )}
+        </motion.div>
+)}
+
+        {/* Settings View */}
         {currentView === 'settings' && (
           <motion.div
             key="settings"
@@ -949,13 +953,12 @@ return (
                 onClick={() => setShowShareModal(true)}
               >
                 <ApperIcon name="Share" className="w-5 h-5" />
-                <span className="font-medium">Share Profile</span>
+<span className="font-medium">Share Profile</span>
               </button>
-</div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-
       {/* Story Viewer Modal */}
       <AnimatePresence>
         {viewingStory && (
@@ -1007,15 +1010,15 @@ return (
       </AnimatePresence>
 
       {/* Share Profile Modal */}
+{/* Share Profile Modal */}
       <AnimatePresence>
         {showShareModal && (
-<ShareProfileModal 
+          <ShareProfileModal 
             onClose={() => setShowShareModal(false)}
             isDark={isDark}
           />
         )}
       </AnimatePresence>
-      {/* Memories Modal */}
       <AnimatePresence>
         {showMemoriesModal && (
           <motion.div
@@ -1421,9 +1424,9 @@ const ShareProfileModal = ({ onClose, isDark }) => {
               <ApperIcon name="QrCode" className="w-4 h-4" />
             )}
             <span className="text-sm">QR Code</span>
-          </button>
+</button>
         </div>
-</motion.div>
+      </motion.div>
     </motion.div>
   )
 }
