@@ -60,19 +60,7 @@ const Home = () => {
       {/* Main Content */}
       <div className="relative z-10 h-[calc(100vh-80px)] sm:h-[calc(100vh-60px)]">
         <MainFeature />
-      </div>
-
-      {/* App Brand Indicator */}
-      <motion.div 
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.5, type: "spring", stiffness: 500 }}
-        className="absolute top-6 left-1/2 transform -translate-x-1/2 z-40"
-      >
-        <div className="px-4 py-1 bg-black/50 backdrop-blur-md rounded-full border border-primary/30">
-          <span className="text-primary text-xs font-bold tracking-wide">FlashChat</span>
-        </div>
-      </motion.div>
+</div>
 
       {/* Floating Action Elements */}
       <motion.div 
