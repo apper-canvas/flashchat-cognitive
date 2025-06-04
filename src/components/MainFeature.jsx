@@ -466,7 +466,7 @@ className="mx-4 mb-4"
                     <ApperIcon name="Circle" className="w-12 h-12 text-black" />
                   </div>
                 )}
-              </motion.button>
+</motion.button>
 
               <div className="flex items-center gap-3">
                 <button 
