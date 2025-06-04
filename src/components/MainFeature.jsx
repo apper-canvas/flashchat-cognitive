@@ -4,12 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import ApperIcon from './ApperIcon'
 import { useTheme } from '../contexts/ThemeContext'
 import { toast } from 'react-toastify'
-import { memoriesService } from '../services'
+import { toast } from 'react-toastify'
+import { memoriesService, photoEditingService } from '../services'
 
 const MainFeature = () => {
   const [currentView, setCurrentView] = useState('camera') // camera, stories, chat
   const [isCapturing, setIsCapturing] = useState(false)
-  const [capturedMedia, setCapturedMedia] = useState(null)
   const [messages, setMessages] = useState([
     { id: 1, sender: 'alex_flash', text: '👻', type: 'received', timer: 5, viewed: false },
     { id: 2, sender: 'sarah_snap', text: 'Check this out! 📸', type: 'received', timer: 10, viewed: false },
@@ -116,7 +116,7 @@ const MainFeature = () => {
   })
   
   const [mediaTimer, setMediaTimer] = useState(null)
-  const [selectedFilter, setSelectedFilter] = useState('normal')
+const [selectedFilter, setSelectedFilter] = useState('normal')
   const [showFilters, setShowFilters] = useState(false)
   const [filters] = useState([
     { id: 'normal', name: 'Normal', css: 'none' },
@@ -129,6 +129,36 @@ const MainFeature = () => {
     { id: 'dark', name: 'Dark', css: 'brightness(0.7) contrast(1.3)' },
     { id: 'retro', name: 'Retro', css: 'sepia(0.4) saturate(1.8) hue-rotate(315deg) brightness(1.1)' }
   ])
+
+  // Photo editing states
+  const [showPhotoEditor, setShowPhotoEditor] = useState(false)
+  const [editingSession, setEditingSession] = useState(null)
+  const [editTab, setEditTab] = useState('edit')
+  const [editParams, setEditParams] = useState({
+    brightness: 0,
+    contrast: 1,
+    saturation: 1,
+    blur: 0
+  })
+  const [placedStickers, setPlacedStickers] = useState([])
+  const [selectedMusic, setSelectedMusic] = useState(null)
+  const [musicPlaying, setMusicPlaying] = useState(false)
+  const [musicVolume, setMusicVolume] = useState(1)
+  const [selectedStickerCategory, setSelectedStickerCategory] = useState('emojis')
+  
+  const [availableMusic] = useState([
+    { id: 1, title: "Summer Vibes", artist: "DJ Cool", genre: "Electronic", duration: 180, thumbnail: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100&h=100&fit=crop" },
+    { id: 2, title: "Chill Beats", artist: "Lo-Fi Master", genre: "Lo-Fi", duration: 145, thumbnail: "https://images.unsplash.com/photo-1571974599782-87624638275c?w=100&h=100&fit=crop" },
+    { id: 3, title: "Party Time", artist: "Beat Drop", genre: "Dance", duration: 200, thumbnail: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&h=100&fit=crop" }
+  ])
+  
+  const [availableStickers] = useState({
+    emojis: ['😀', '😂', '🥰', '😍', '🤩', '😎', '🤪', '😜', '🤗', '🤔', '😊', '😉'],
+    hearts: ['❤️', '💛', '💚', '💙', '💜', '🖤', '🤍', '💕', '💖', '💗'],
+    animals: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯'],
+    food: ['🍕', '🍔', '🍟', '🌭', '🍿', '🧂', '🥓', '🥚', '🧀', '🥞'],
+    nature: ['🌸', '🌺', '🌻', '🌷', '🌹', '🌿', '🍀', '🌾', '💐', '🌳']
+  })
 
   const cameraRef = useRef(null)
   
@@ -229,9 +259,9 @@ const MainFeature = () => {
   const sendMessage = () => {
     if (!newMessage.trim() || !selectedFriend) return
     
-    const message = {
+const message = {
       id: Date.now(),
-sender: 'You',
+      sender: 'You',
       text: newMessage,
       type: 'sent',
       timer: 5,
@@ -396,20 +426,20 @@ return (
               {showFilters && (
                 <motion.div
                   initial={{ y: 100, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
+animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 100, opacity: 0 }}
-className="mx-4 mb-4"
+                  className="mx-4 mb-4"
                 >
                   <div className="glass-card p-4">
                     <div className="flex items-center justify-between mb-3">
                       <h3 className={`font-semibold text-sm ${isDark ? 'text-white' : 'text-gray-800'}`}>Choose Filter</h3>
-                      <button
+<button
                         onClick={() => setShowFilters(false)}
-                      className="w-6 h-6 flex items-center justify-center"
-                    >
-                      <ApperIcon name="ChevronDown" className={`w-4 h-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`} />
-                    </button>
-                  </div>
+                        className="w-6 h-6 flex items-center justify-center"
+                      >
+                        <ApperIcon name="ChevronDown" className={`w-4 h-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`} />
+                      </button>
+                    </div>
                   <div className="flex gap-3 overflow-x-auto pb-2">
                       {filters.map((filter) => (
                         <motion.button
@@ -419,24 +449,25 @@ className="mx-4 mb-4"
                           transition={{ delay: filters.indexOf(filter) * 0.05 }}
                           onClick={() => selectFilter(filter)}
                           className={`filter-button ${selectedFilter === filter.id ? 'active' : ''}`}
-                        >
+>
                           <div className="flex flex-col items-center justify-center h-full p-1">
-<div 
+                            <div 
                               className="w-8 h-8 bg-gradient-to-br from-primary/40 to-secondary/40 rounded-lg mb-1 filter-preview"
                               style={{ filter: filter.css }}
                             />
                             <span className={`text-xs font-medium truncate ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                               {filter.name}
+{filter.name}
                             </span>
-                      </div>
-                    </motion.button>
+                          </div>
                   ))}
                 </div>
               </div>
             </motion.div>
-          )}
+)}
         </AnimatePresence>
-{/* Camera Controls */}
+
+        {/* Camera Controls */}
             <div className="flex items-center justify-between px-6 pb-6">
               <div className="flex items-center gap-3">
                 <button
@@ -464,9 +495,9 @@ className="mx-4 mb-4"
                 ) : (
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
                     <ApperIcon name="Circle" className="w-12 h-12 text-black" />
-                  </div>
+</div>
                 )}
-</motion.button>
+              </motion.button>
 
               <div className="flex items-center gap-3">
                 <button 
@@ -513,13 +544,13 @@ className="mx-4 mb-4"
                       <div className="absolute bottom-3 left-3 flex items-center gap-2">
                         <img 
                           src={story.avatar} 
+src={story.avatar} 
                           alt={story.user}
                           className="w-6 h-6 rounded-full border border-white/50"
-/>
+                        />
                         <span className="text-white text-xs font-medium text-shadow">
                           {story.user}
                         </span>
-                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -556,9 +587,9 @@ className="mx-4 mb-4"
                             <span className="text-black font-bold text-lg">
                               {friend[0].toUpperCase()}
                             </span>
-                          </div>
-                          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-black" />
 </div>
+                          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-black" />
+                        </div>
                         <div className="flex-1">
                           <h3 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-800'}`}>{friend}</h3>
                           <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Tap to chat</p>
@@ -573,12 +604,12 @@ className="mx-4 mb-4"
               <div className="flex-1 flex flex-col">
                 {/* Chat Header */}
                 <div className="flex items-center gap-3 px-4 pb-4 border-b border-white/10">
-                  <button 
+<button 
                     onClick={() => setSelectedFriend(null)}
-className="w-8 h-8 flex items-center justify-center"
-                >
-                  <ApperIcon name="ArrowLeft" className={`w-5 h-5 ${isDark ? 'text-white' : 'text-gray-800'}`} />
-                </button>
+                    className="w-8 h-8 flex items-center justify-center"
+                  >
+                    <ApperIcon name="ArrowLeft" className={`w-5 h-5 ${isDark ? 'text-white' : 'text-gray-800'}`} />
+                  </button>
                 <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
                   <span className="text-black font-bold">
                     {selectedFriend[0].toUpperCase()}
@@ -600,12 +631,12 @@ className="w-8 h-8 flex items-center justify-center"
                     >
                       <div
                         onClick={() => viewMessage(message.id)}
-                        className={`chat-bubble cursor-pointer ${
+className={`chat-bubble cursor-pointer ${
                           message.type === 'sent'
-? 'bg-primary text-black'
-                          : message.viewed
-                            ? 'bg-gray-200 text-gray-500'
-                            : 'bg-secondary text-white'
+                            ? 'bg-primary text-black'
+                            : message.viewed
+                              ? 'bg-gray-200 text-gray-500'
+                              : 'bg-secondary text-white'
                         } ${!message.viewed && message.type === 'received' ? 'animate-bounce-soft' : ''}`}
                       >
                         <p className="text-sm">{message.text}</p>
@@ -623,13 +654,13 @@ className="w-8 h-8 flex items-center justify-center"
                       </div>
                     </motion.div>
                   ))}
-                </div>
+</div>
 
-{/* Message Input */}
-              <div className="p-4 border-t border-white/10">
-                {/* Emoji Picker */}
-                <AnimatePresence>
-                  {showEmojiPicker && (
+                {/* Message Input */}
+                <div className="p-4 border-t border-white/10">
+                  {/* Emoji Picker */}
+                  <AnimatePresence>
+                    {showEmojiPicker && (
                     <motion.div
                       initial={{ y: 50, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
@@ -676,9 +707,9 @@ className="w-8 h-8 flex items-center justify-center"
                 <div className="flex gap-3 items-center">
                   <input
                     type="text"
-                    value={newMessage}
+value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                    onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                     placeholder="Type a message..."
                     className="flex-1 bg-gray-100 border border-gray-300 rounded-full px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:border-primary/50"
                   />
@@ -700,10 +731,10 @@ onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                   </button>
                 </div>
               </div>
-            </div>
-          )}
-        </motion.div>
-)}
+</div>
+            )}
+          </motion.div>
+        )}
 
         {/* Settings View */}
         {currentView === 'settings' && (
@@ -938,9 +969,9 @@ onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                     className="w-full bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-center text-gray-800 resize-none"
                     placeholder="Bio"
                     rows="2"
-                  />
+/>
                   <div className="flex gap-2 justify-center">
-<button
+                    <button
                       onClick={() => {
                         setProfile(prev => ({ ...prev, isEditing: false }))
                         toast.success('Profile updated!', {
@@ -1026,9 +1057,9 @@ onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
               <button 
                 className="flex items-center justify-center space-x-3 w-full p-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg"
                 onClick={() => setShowShareModal(true)}
-              >
+>
                 <ApperIcon name="Share" className="w-5 h-5" />
-<span className="font-medium">Share Profile</span>
+                <span className="font-medium">Share Profile</span>
               </button>
             </div>
           </motion.div>
@@ -1083,11 +1114,10 @@ onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
           </motion.div>
         )}
       </AnimatePresence>
+</AnimatePresence>
 
       {/* Share Profile Modal */}
-{/* Share Profile Modal */}
       <AnimatePresence>
-        {showShareModal && (
           <ShareProfileModal 
             onClose={() => setShowShareModal(false)}
             isDark={isDark}
@@ -1291,10 +1321,195 @@ onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
               </div>
             </motion.div>
           </motion.div>
-        )}
+)}
       </AnimatePresence>
     </div>
   )
+
+  // Photo editing functions
+  const openPhotoEditor = async () => {
+    if (!capturedMedia) return
+    
+    try {
+      const session = await photoEditingService.createSession(capturedMedia)
+      setEditingSession(session)
+      setShowPhotoEditor(true)
+      setEditTab('edit')
+      setEditParams({
+        brightness: 0,
+        contrast: 1,
+        saturation: 1,
+        blur: 0
+      })
+      setPlacedStickers([])
+      setSelectedMusic(null)
+      
+      toast.success('🎨 Photo editor opened!', {
+        icon: false,
+        className: 'bg-black border border-primary/30'
+      })
+    } catch (error) {
+      toast.error('Failed to open photo editor', {
+        icon: false,
+        className: 'bg-black border border-red-500/30'
+      })
+    }
+  }
+
+  const closePhotoEditor = () => {
+    setShowPhotoEditor(false)
+    setEditingSession(null)
+    setSelectedMusic(null)
+    setMusicPlaying(false)
+    setPlacedStickers([])
+    
+    toast.info('Photo editor closed', {
+      icon: false,
+      className: 'bg-black border border-gray-500/30'
+    })
+  }
+
+  const updateEditParam = async (param, value) => {
+    setEditParams(prev => ({ ...prev, [param]: value }))
+    
+    if (editingSession) {
+      try {
+        await photoEditingService.applyAdjustment(editingSession.id, param, value)
+      } catch (error) {
+        console.error('Failed to update edit parameter:', error)
+      }
+    }
+  }
+
+  const applyFilterToEdit = async (filter) => {
+    setSelectedFilter(filter.id)
+    
+    if (editingSession) {
+      try {
+        await photoEditingService.applyFilter(editingSession.id, filter)
+        toast.success(`🎨 ${filter.name} filter applied!`, {
+          icon: false,
+          className: 'bg-black border border-primary/30'
+        })
+      } catch (error) {
+        toast.error('Failed to apply filter', {
+          icon: false,
+          className: 'bg-black border border-red-500/30'
+        })
+      }
+    }
+  }
+
+  const selectMusicTrack = async (track) => {
+    setSelectedMusic(track)
+    setMusicPlaying(false)
+    
+    if (editingSession) {
+      try {
+        await photoEditingService.addMusic(editingSession.id, track)
+        toast.success(`🎵 ${track.title} added!`, {
+          icon: false,
+          className: 'bg-black border border-primary/30'
+        })
+      } catch (error) {
+        toast.error('Failed to add music', {
+          icon: false,
+          className: 'bg-black border border-red-500/30'
+        })
+      }
+    }
+  }
+
+  const toggleMusicPlayback = () => {
+    setMusicPlaying(!musicPlaying)
+    toast.info(`🎵 Music ${!musicPlaying ? 'playing' : 'paused'}`, {
+      icon: false,
+      className: 'bg-black border border-primary/30'
+    })
+  }
+
+  const addSticker = async (stickerContent) => {
+    const sticker = {
+      id: Date.now(),
+      content: stickerContent,
+      position: {
+        x: Math.random() * 60 + 20, // Random position between 20-80%
+        y: Math.random() * 60 + 20
+      },
+      size: 30
+    }
+    
+    if (editingSession) {
+      try {
+        const updatedSession = await photoEditingService.addSticker(editingSession.id, sticker)
+        setPlacedStickers(updatedSession.edits.stickers)
+        
+        toast.success(`✨ Sticker added!`, {
+          icon: false,
+          className: 'bg-black border border-primary/30'
+        })
+      } catch (error) {
+        toast.error('Failed to add sticker', {
+          icon: false,
+          className: 'bg-black border border-red-500/30'
+        })
+      }
+    }
+  }
+
+  const removeSticker = async (stickerId) => {
+    if (editingSession) {
+      try {
+        const updatedSession = await photoEditingService.removeSticker(editingSession.id, stickerId)
+        setPlacedStickers(updatedSession.edits.stickers)
+        
+        toast.success('Sticker removed', {
+          icon: false,
+          className: 'bg-black border border-secondary/30'
+        })
+      } catch (error) {
+        toast.error('Failed to remove sticker', {
+          icon: false,
+          className: 'bg-black border border-red-500/30'
+        })
+      }
+    }
+  }
+
+  const saveEditedPhoto = async () => {
+    if (!editingSession) return
+    
+    try {
+      const editedPhoto = await photoEditingService.saveEditedPhoto(editingSession.id, 'Edited Photo')
+      
+      // Update the captured media with edited version
+      setCapturedMedia({
+        ...capturedMedia,
+        ...editedPhoto
+      })
+      
+      // Save to memories
+      await memoriesService.create({
+        title: editedPhoto.title,
+        url: editedPhoto.url,
+        thumbnail: editedPhoto.thumbnail,
+        filter: editedPhoto.filter,
+        location: 'Camera Roll'
+      })
+      
+      closePhotoEditor()
+      
+      toast.success('📸 Photo saved successfully!', {
+        icon: false,
+        className: 'bg-black border border-green-500/30'
+      })
+    } catch (error) {
+      toast.error('Failed to save photo', {
+        icon: false,
+        className: 'bg-black border border-red-500/30'
+      })
+    }
+  }
 }
 
 // Share Profile Modal Component
@@ -1499,7 +1714,7 @@ const ShareProfileModal = ({ onClose, isDark }) => {
               <ApperIcon name="QrCode" className="w-4 h-4" />
             )}
             <span className="text-sm">QR Code</span>
-</button>
+          </button>
         </div>
       </motion.div>
     </motion.div>
@@ -1507,3 +1722,7 @@ const ShareProfileModal = ({ onClose, isDark }) => {
 }
 
 export default MainFeature
+</AnimatePresence>
+    </div>
+  )
+}

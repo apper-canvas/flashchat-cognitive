@@ -1,0 +1,134 @@
+[
+  {
+    "id": 1,
+    "title": "Summer Vibes",
+    "artist": "Sunny Day Records",
+    "genre": "Pop",
+    "duration": 180,
+    "url": "https://example.com/music/summer-vibes.mp3",
+    "thumbnail": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100&h=100&fit=crop",
+    "mood": "upbeat",
+    "popularity": 95
+  },
+  {
+    "id": 2,
+    "title": "Chill Nights",
+    "artist": "Moonlight Studio",
+    "genre": "Electronic",
+    "duration": 240,
+    "url": "https://example.com/music/chill-nights.mp3",
+    "thumbnail": "https://images.unsplash.com/photo-1571974599782-87624638275c?w=100&h=100&fit=crop",
+    "mood": "relaxed",
+    "popularity": 88
+  },
+  {
+    "id": 3,
+    "title": "Morning Coffee",
+    "artist": "Acoustic Dreams",
+    "genre": "Acoustic",
+    "duration": 210,
+    "url": "https://example.com/music/morning-coffee.mp3",
+    "thumbnail": "https://images.unsplash.com/photo-1465779073675-0fadb29c7fa0?w=100&h=100&fit=crop",
+    "mood": "peaceful",
+    "popularity": 92
+  },
+  {
+    "id": 4,
+    "title": "Urban Beat",
+    "artist": "City Sounds",
+    "genre": "Hip Hop",
+    "duration": 195,
+    "url": "https://example.com/music/urban-beat.mp3",
+    "thumbnail": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100&h=100&fit=crop",
+    "mood": "energetic",
+    "popularity": 87
+  },
+  {
+    "id": 5,
+    "title": "Dreamy Escape",
+    "artist": "Ethereal Music",
+    "genre": "Ambient",
+    "duration": 300,
+    "url": "https://example.com/music/dreamy-escape.mp3",
+    "thumbnail": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=100&h=100&fit=crop",
+    "mood": "dreamy",
+    "popularity": 84
+  },
+  {
+    "id": 6,
+    "title": "Party Time",
+    "artist": "Dance Floor",
+    "genre": "Electronic",
+    "duration": 220,
+    "url": "https://example.com/music/party-time.mp3",
+    "thumbnail": "https://images.unsplash.com/photo-1571974599782-87624638275c?w=100&h=100&fit=crop",
+    "mood": "party",
+    "popularity": 96
+  },
+  {
+    "id": 7,
+    "title": "Sunset Walk",
+    "artist": "Indie Collective",
+    "genre": "Indie",
+    "duration": 165,
+    "url": "https://example.com/music/sunset-walk.mp3",
+    "thumbnail": "https://images.unsplash.com/photo-1465779073675-0fadb29c7fa0?w=100&h=100&fit=crop",
+    "mood": "nostalgic",
+    "popularity": 90
+  },
+  {
+    "id": 8,
+    "title": "Focus Flow",
+    "artist": "Productivity Pro",
+    "genre": "Lo-Fi",
+    "duration": 480,
+    "url": "https://example.com/music/focus-flow.mp3",
+    "thumbnail": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=100&h=100&fit=crop",
+    "mood": "focused",
+    "popularity": 89
+  },
+  {
+    "id": 9,
+    "title": "Adventure Awaits",
+    "artist": "Epic Sounds",
+    "genre": "Cinematic",
+    "duration": 275,
+    "url": "https://example.com/music/adventure-awaits.mp3",
+    "thumbnail": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100&h=100&fit=crop",
+    "mood": "epic",
+    "popularity": 91
+  },
+  {
+    "id": 10,
+    "title": "Gentle Rain",
+    "artist": "Nature Sounds",
+    "genre": "Ambient",
+    "duration": 360,
+    "url": "https://example.com/music/gentle-rain.mp3",
+    "thumbnail": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=100&h=100&fit=crop",
+    "mood": "calming",
+    "popularity": 85
+  },
+  {
+    "id": 11,
+    "title": "Neon Lights",
+    "artist": "Synth Wave",
+    "genre": "Synthwave",
+    "duration": 245,
+    "url": "https://example.com/music/neon-lights.mp3",
+    "thumbnail": "https://images.unsplash.com/photo-1571974599782-87624638275c?w=100&h=100&fit=crop",
+    "mood": "retro",
+    "popularity": 93
+  },
+  {
+    "id": 12,
+    "title": "Country Road",
+    "artist": "Folk Heritage",
+    "genre": "Country",
+    "duration": 195,
+    "url": "https://example.com/music/country-road.mp3",
+    "thumbnail": "https://images.unsplash.com/photo-1465779073675-0fadb29c7fa0?w=100&h=100&fit=crop",
+    "mood": "homey",
+    "popularity": 86
+  }
+]
